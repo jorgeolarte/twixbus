@@ -7,9 +7,7 @@ import * as navigations from './navigations';
 
 const RootStack = createStackNavigator();
 
-const MyApp = ({ isConnected, data }) => {
-  console.log('isConnected: ', isConnected);
-
+const MyApp = ({ isConnected, userUid }) => {
   return (
     <>
       <StatusBar style='auto' backgroundColor='#662d91' />
@@ -20,7 +18,7 @@ const MyApp = ({ isConnected, data }) => {
               name='Offline'
               component={navigations.OfflineStack}
             />
-          ) : data === null ? (
+          ) : userUid === null ? (
             <RootStack.Screen name='Login' component={navigations.LoginStack} />
           ) : (
             <RootStack.Screen name='Main' component={navigations.AppStack} />
@@ -32,7 +30,10 @@ const MyApp = ({ isConnected, data }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { data: state.user.userUid, isConnected: state.network.isConnected };
+  return {
+    userUid: state.user.userUid,
+    isConnected: state.network.isConnected,
+  };
 };
 
 export default connect(mapStateToProps)(MyApp);

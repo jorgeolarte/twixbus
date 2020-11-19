@@ -3,16 +3,20 @@ import { connect } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/stack';
 import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import Firebase from '../utils/Firebase';
-import { signIn } from '../reducers/user';
+import { signIn, setPhone } from '../reducers/user';
 import { MainButton, PressText } from '../components';
 
-const CodeScreen = ({ route, navigation, signIn }) => {
+const CodeScreen = ({ route, navigation, signIn, setPhone }) => {
   const headerHeight = useHeaderHeight();
 
   const [hasCode, setHasCode] = useState(false);
   const [verificationCode, setVerificationCode] = useState(null);
 
   const { phoneNumber, verificationId } = route.params;
+
+  const writeUserData = (userId, phone) => {
+    // const { isNew, amount } = User(userId);
+  };
 
   const validate = async () => {
     try {
@@ -24,22 +28,23 @@ const CodeScreen = ({ route, navigation, signIn }) => {
       await Firebase.auth()
         .signInWithCredential(credential)
         .then((confirmationResult) => {
-          // await AsyncStorage.setItem("@user_uid", confirmationResult.user.uid);
+          console.log('el telefono es: ', phoneNumber);
+          setPhone(phoneNumber);
           signIn(confirmationResult.user.uid);
-          // await signIn(confirmationResult.user.uid);
         })
-        .catch((err) =>
+        .catch((err) => {
+          console.log('error', err.message);
+
           Alert.alert(
             'Error de código',
             'El código de verificación de SMS que se usó para crear la credencial de autenticación del teléfono no es válido.'
-          )
-        );
+          );
+        });
 
-      console.log('Phone authentication successful 👍');
+      // console.log('Phone authentication successful 👍');
       // showMessage({ text: "Phone authentication successful 👍" });
     } catch (err) {
-      Alert.alert('Error de código', 'holi');
-      console.log(`Error validate: ${err.message}`);
+      console.log(`Error validate: ${err}`);
       // showMessage({ text: `Error: ${err.message}`, color: "red" });
     }
   };
@@ -82,6 +87,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   signIn: (userUid) => dispatch(signIn(userUid)),
+  setPhone: (phone) => dispatch(setPhone(phone)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CodeScreen);

@@ -1,60 +1,62 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { makeType, mac } from '../utils/Reducers';
 
 const initialState = {
   userUid: null,
-  phoneNumber: "",
+  phoneNumber: '',
   amount: 0,
+  isNew: true,
 };
 
-const IS_LOGIN = "IS_LOGIN";
-const SIGN_OUT = "SIGN_OUT";
-const SIGN_IN = "SIGN_IN";
+const t = makeType('user');
 
-export const signIn = (userUid) => ({
-  type: SIGN_IN,
-  payload: userUid,
-});
+const IS_LOGIN = t('IS_LOGIN');
+const SIGN_OUT = t('SIGN_OUT');
+const SIGN_IN = t('SIGN_IN');
+const SET_PHONE = t('SET_PHONE');
+const SET_AMOUNT = t('SET_AMOUNT');
+const SET_ISNEW = t('SET_ISNEW');
 
-export const signOut = () => ({
-  type: SIGN_OUT,
-});
-
-export const isLogin = () => ({
-  type: IS_LOGIN,
-});
+export const isLogin = mac(IS_LOGIN);
+export const signIn = mac(SIGN_IN, 'payload');
+export const signOut = mac(SIGN_OUT);
+export const setPhone = mac(SET_PHONE, 'payload');
+export const setAmount = mac(SET_AMOUNT, 'payload');
+export const setIsNew = mac(SET_ISNEW, 'payload');
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SIGN_IN:
-      try {
-        AsyncStorage.setItem("@user_uid", action.payload);
-      } catch (err) {}
       return {
         ...state,
         userUid: action.payload,
       };
 
     case SIGN_OUT:
-      try {
-        AsyncStorage.removeItem("@user_uid");
-      } catch (err) {}
       return {
         ...state,
         userUid: null,
       };
 
     case IS_LOGIN:
-      AsyncStorage.getItem("@user_uid")
-        .then((res) => {
-          return {
-            ...state,
-            userUid: res,
-          };
-        })
-        .catch((err) => {
-          console.log("error: ", err);
-          return { ...state };
-        });
+      return state;
+
+    case SET_PHONE:
+      return {
+        ...state,
+        phoneNumber: action.payload,
+      };
+
+    case SET_AMOUNT:
+      return {
+        ...state,
+        amount: action.payload,
+      };
+
+    case SET_ISNEW:
+      return {
+        ...state,
+        isNew: action.payload,
+      };
 
     default:
       return state;

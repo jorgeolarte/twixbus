@@ -1,15 +1,18 @@
 import React from 'react';
-import { NetworkProvider } from 'react-native-offline';
 import { Provider } from 'react-redux';
+import { NetworkProvider } from 'react-native-offline';
+import { PersistGate } from 'redux-persist/integration/react';
 import MyApp from './src/index';
-import store from './src/store';
+import { store, persistor } from './src/store';
 
 export default function () {
   return (
     <Provider store={store}>
-      <NetworkProvider>
-        <MyApp />
-      </NetworkProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <NetworkProvider>
+          <MyApp />
+        </NetworkProvider>
+      </PersistGate>
     </Provider>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainStackScreen from './MainStack';
-import Logo from '../components/MenuLogo';
+import { MenuLogo, Amount } from '../components';
 
 const AppStack = createStackNavigator();
 
@@ -13,13 +13,13 @@ export default function AppStackScreen() {
         component={MainStackScreen}
         options={({ navigation }) => ({
           initialRouteName: 'App',
-          headerTitle: () => <Logo />,
+          headerTitle: () => <MenuLogo />,
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: '#662d91',
           },
           headerTintColor: '#eee',
-          //   headerRight: () => <ButtonMenu navigation={navigation} />,
+          headerRight: () => <Amount />,
         })}
       />
     </AppStack.Navigator>
