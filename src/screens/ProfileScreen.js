@@ -1,11 +1,11 @@
-import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import React from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 export default function Profile({ navigation }) {
   return (
     <View>
       <Text>Profile!</Text>
-      <Button title='Regresar' onPress={() => navigation.navigate("Home")} />
+      <Button title='Regresar' onPress={() => navigation.navigate('Home')} />
     </View>
   );
 }
@@ -13,8 +13,8 @@ export default function Profile({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

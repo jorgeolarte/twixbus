@@ -1,22 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { signOut } from '../reducers/user';
-import { NewUser } from '../components';
+import { NewUser, QRButton, MyTrips } from '../components';
+import Firebase from '../utils/Firebase';
 
 const HomeScreen = ({ navigation, data, signOut }) => {
-  console.log('-------9--------');
-  // console.log('homescreen: ', isNew);
-  console.log('data: ', data);
-  // console.log('loading: ', loading);
-  // console.log('error: ', error);
+  // const [myTrips, setMyTrips] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   setMyTrips([]);
+  //   getMyTrips();
+  //   myTrips.map((x) =>
+  //     x.createdAt == '1605889123842' ? console.log('Si') : console.log('no')
+  //   );
+  //   // updateMyTrips();
+  // }, []);
 
   return (
-    <View>
-      <NewUser />
-      <Text>Signed in!</Text>
-      <Button title='Perfil' onPress={() => navigation.navigate('Profile')} />
-      <Button title='Cerrar sesión' onPress={() => signOut()} />
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.container}>
+        <NewUser navigation={navigation} />
+        <MyTrips userUid={data.userUid} />
+      </ScrollView>
+      <QRButton />
     </View>
   );
 };
@@ -35,7 +43,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'flex-start',
+    padding: 10,
   },
 });

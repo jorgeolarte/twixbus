@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainStackScreen from './MainStack';
-import { MenuLogo, Amount } from '../components';
+import { MenuLogo, Amount, GoBack } from '../components';
 
 const AppStack = createStackNavigator();
 
@@ -20,6 +20,13 @@ export default function AppStackScreen() {
           },
           headerTintColor: '#eee',
           headerRight: () => <Amount />,
+          headerBackTitle: 'hola',
+          headerLeft: () => (
+            <GoBack
+              onPress={() => navigation.goBack()}
+              navigation={navigation}
+            />
+          ),
         })}
       />
     </AppStack.Navigator>
