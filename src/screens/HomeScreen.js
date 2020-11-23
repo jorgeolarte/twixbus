@@ -1,29 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { signOut } from '../reducers/user';
 import { NewUser, QRButton, MyTrips } from '../components';
-import Firebase from '../utils/Firebase';
 
 const HomeScreen = ({ navigation, data, signOut }) => {
-  // const [myTrips, setMyTrips] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   setMyTrips([]);
-  //   getMyTrips();
-  //   myTrips.map((x) =>
-  //     x.createdAt == '1605889123842' ? console.log('Si') : console.log('no')
-  //   );
-  //   // updateMyTrips();
-  // }, []);
+  console.log('data: ', data);
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <NewUser navigation={navigation} />
         <MyTrips userUid={data.userUid} />
-      </ScrollView>
+      </View>
       <QRButton />
     </View>
   );

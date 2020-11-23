@@ -1,13 +1,20 @@
 import { StatusBar } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import * as navigations from './navigations';
+import { signOut } from './reducers/user';
 
 const RootStack = createStackNavigator();
 
-const MyApp = ({ isConnected, userUid }) => {
+const MyApp = ({ data, isConnected, signOut }) => {
+  useEffect(() => {
+    if (typeof data.phoneNumber === 'undefined') {
+      signOut();
+    }
+  }, [data]);
+
   return (
     <>
       <StatusBar style='auto' backgroundColor='#662d91' />
@@ -18,7 +25,7 @@ const MyApp = ({ isConnected, userUid }) => {
               name='Offline'
               component={navigations.OfflineStack}
             />
-          ) : userUid === null ? (
+          ) : data.userUid === null ? (
             <RootStack.Screen name='Login' component={navigations.LoginStack} />
           ) : (
             <RootStack.Screen name='Main' component={navigations.AppStack} />
@@ -31,9 +38,13 @@ const MyApp = ({ isConnected, userUid }) => {
 
 const mapStateToProps = (state) => {
   return {
-    userUid: state.user.userUid,
+    data: state.user,
     isConnected: state.network.isConnected,
   };
 };
 
-export default connect(mapStateToProps)(MyApp);
+const mapDispatchToProps = (dispatch) => ({
+  signOut: () => dispatch(signOut()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyApp);

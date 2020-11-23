@@ -92,7 +92,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(NewUser);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: 'rgba(31, 145, 76, 0.8)',

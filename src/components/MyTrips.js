@@ -1,54 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  FlatList,
-  View,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
+import { DateTime } from 'luxon';
+import { StyleSheet, FlatList, View, ActivityIndicator } from 'react-native';
 import ItemTrip from './ItemTrip';
 import Firebase from '../utils/Firebase';
 
 export default ({ userUid }) => {
   const [myTrips, setMyTrips] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    setMyTrips([]);
-    return getMyTrips();
-  }, []);
-
-  function getMyTrips() {
-    try {
+    const fetchMyTrips = () => {
       Firebase.database()
         .ref(`mytrips/${userUid}/`)
-        // .orderByChild('createdAt')
-        .once('value')
-        .then((snapshot) => {
-          snapshot.forEach((trip) => {
-            setMyTrips((trips) => [...trips, trip.toJSON()]);
-          });
+        .orderByKey()
+        .on('value', (snapshot) => {
+          addedTrip(snapshot);
         });
+    };
 
-      setLoading(false);
+    return fetchMyTrips();
+  }, []);
+
+  const addedTrip = (snapshot) => {
+    setLoading(true);
+    try {
+      setMyTrips([]);
+      snapshot.forEach((myTrip) => {
+        let tempTrip = myTrip.toJSON();
+        tempTrip.prettyDate = DateTime.fromMillis(
+          parseInt(tempTrip.createdAt)
+        ).toLocaleString(DateTime.DATETIME_MED);
+        setMyTrips((trips) => [...trips, tempTrip]);
+      });
     } catch (err) {
-      console.log('Error: ', err);
-      setLoading(true);
+      console.log('error: ', err);
+    } finally {
+      setLoading(false);
     }
-  }
-
-  const wait = (timeout) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, timeout);
-    });
-  };
-
-  const refreshComponent = () => {
-    setRefreshing(true);
-    setMyTrips([]);
-    getMyTrips();
-    wait(2000).then(() => setRefreshing(false));
   };
 
   return loading ? (
@@ -57,18 +45,16 @@ export default ({ userUid }) => {
     </View>
   ) : (
     <FlatList
-      data={myTrips.reverse()}
+      style={styles.container}
+      data={Object.assign([], myTrips).reverse()}
       renderItem={({ item }) => <ItemTrip myTrip={item} />}
       keyExtractor={(myTrip) => String(myTrip.createdAt)}
-      refreshControl={
-        <RefreshControl
-          color='rgba(102, 45, 145, 1)'
-          refreshing={refreshing}
-          onRefresh={refreshComponent}
-        />
-      }
     />
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+  },
+});

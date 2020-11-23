@@ -7,7 +7,7 @@ export default ({ myTrip, formatDate }) => {
     <View style={styles.container}>
       <Text>{myTrip.carPlate}</Text>
       <Text>{myTrip.company}</Text>
-      <Text>{formatDate}</Text>
+      <Text>{myTrip.prettyDate}</Text>
     </View>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Video } from 'expo-av';
 import LoginForm from '../components/LoginForm';
 import { Logo } from '../components/';
@@ -9,7 +9,7 @@ import Firebase from '../utils/Firebase';
 export default function LoginScreen({ navigation }) {
   const recaptchaVerifier = useRef(null);
 
-  const [hasPhone, setHasPhone] = useState(false);
+  const [hasPhone, setHasPhone] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationId, setVerificationId] = useState();
 
@@ -38,6 +38,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   const onChangePhone = (phone) => {
+    console.log('phone: ', phone);
     setHasPhone(String(phone).length === 0 ? false : true);
     setPhoneNumber(`+57${phone}`);
   };
