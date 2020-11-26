@@ -27,9 +27,12 @@ export default ({ userUid }) => {
       setMyTrips([]);
       snapshot.forEach((myTrip) => {
         let tempTrip = myTrip.toJSON();
-        tempTrip.prettyDate = DateTime.fromMillis(
+        tempTrip.boardingDate = DateTime.fromMillis(
           parseInt(tempTrip.createdAt)
-        ).toLocaleString(DateTime.DATETIME_MED);
+        ).toLocaleString(DateTime.DATE_MED);
+        tempTrip.boardingTime = DateTime.fromMillis(
+          parseInt(tempTrip.createdAt)
+        ).toLocaleString(DateTime.TIME_SIMPLE);
         setMyTrips((trips) => [...trips, tempTrip]);
       });
     } catch (err) {

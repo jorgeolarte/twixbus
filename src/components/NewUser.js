@@ -60,7 +60,7 @@ const NewUser = ({ navigation, user, setIsNew }) => {
       activeOpacity={0.5}
       underlayColor='rgba(31, 145, 76, 0.5)'
       style={styles.container}
-      onPress={() => navigation.navigate('Profile')}
+      onPress={() => navigation.navigate('Profile', { screen: 'Profile' })}
     >
       <>
         <View>

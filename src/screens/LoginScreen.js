@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import { StyleSheet, View, Text, Button } from 'react-native';
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import { Video } from 'expo-av';
 import LoginForm from '../components/LoginForm';
 import { Logo } from '../components/';
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import Firebase from '../utils/Firebase';
 
-export default function LoginScreen({ navigation }) {
+const LoginScreen = ({ navigation, data }) => {
   const recaptchaVerifier = useRef(null);
 
   const [hasPhone, setHasPhone] = useState(true);
@@ -38,7 +39,6 @@ export default function LoginScreen({ navigation }) {
   };
 
   const onChangePhone = (phone) => {
-    console.log('phone: ', phone);
     setHasPhone(String(phone).length === 0 ? false : true);
     setPhoneNumber(`+57${phone}`);
   };
@@ -73,7 +73,13 @@ export default function LoginScreen({ navigation }) {
       />
     </View>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return { data: state.user };
+};
+
+export default connect(mapStateToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
   backgroundVideo: {

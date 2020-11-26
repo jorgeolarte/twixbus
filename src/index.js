@@ -1,26 +1,41 @@
 import { StatusBar } from 'react-native';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import {
+  checkInternetConnection,
+  offlineActionCreators,
+} from 'react-native-offline';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import * as navigations from './navigations';
 import { signOut } from './reducers/user';
 
+const { connectionChange } = offlineActionCreators;
 const RootStack = createStackNavigator();
 
-const MyApp = ({ data, isConnected, signOut }) => {
+const MyApp = ({ data, network, signOut, connectionChange }) => {
   useEffect(() => {
+    const internetChecker = async () => {
+      const isConnected = await checkInternetConnection();
+      // Dispatching can be done inside a connected component, a thunk (where dispatch is injected), saga, or any sort of middleware
+      console.log('isConnected: ', isConnected);
+      // In this example we are using a thunk
+      connectionChange(isConnected);
+    };
+
     if (typeof data.phoneNumber === 'undefined') {
       signOut();
     }
-  }, [data]);
+
+    internetChecker();
+  }, []);
 
   return (
     <>
       <StatusBar style='auto' backgroundColor='#662d91' />
       <NavigationContainer>
-        <RootStack.Navigator initialRouteName='Offline' headerMode='none'>
-          {!isConnected ? (
+        <RootStack.Navigator initialRouteName='Login' headerMode='none'>
+          {!network.isConnected ? (
             <RootStack.Screen
               name='Offline'
               component={navigations.OfflineStack}
@@ -39,12 +54,13 @@ const MyApp = ({ data, isConnected, signOut }) => {
 const mapStateToProps = (state) => {
   return {
     data: state.user,
-    isConnected: state.network.isConnected,
+    network: state.network,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   signOut: () => dispatch(signOut()),
+  connectionChange: (isConnected) => dispatch(connectionChange(isConnected)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyApp);

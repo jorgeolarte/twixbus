@@ -1,20 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   offlineActionCreators,
   checkInternetConnection,
 } from 'react-native-offline';
-import { StyleSheet, View, Text } from 'react-native';
-import { Logo, MainButton } from '../components';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { MainButton } from '../components';
 
-const OfflineScreen = (isConnected) => {
+const { connectionChange } = offlineActionCreators;
+
+const OfflineScreen = ({ network, connectionChange }) => {
+  useEffect(() => {
+    return checkConnection;
+  }, []);
+
+  const checkConnection = async () => {
+    const connection = await checkInternetConnection(
+      'https://google.com',
+      1000,
+      true,
+      'HEAD'
+    );
+    console.log('OfflineScreen 1: ', connection);
+    connectionChange(connection);
+  };
+
   return (
     <View style={styles.container}>
-      <Logo
-        flex={1}
-        justifyContent='flex-end'
-        image={require('../../assets/offline.png')}
-      />
+      <View style={styles.contentImage}>
+        <Image
+          style={styles.image}
+          source={require('../../assets/offline.png')}
+          resizeMode='center'
+        />
+      </View>
       <View style={styles.contentText}>
         <Text style={styles.headingText}>Oooops!</Text>
         <View style={styles.paragraph}>
@@ -25,8 +44,8 @@ const OfflineScreen = (isConnected) => {
         </View>
         <MainButton
           text='Revisar conexión'
-          disabled={!isConnected.isConnected}
-          onPress={() => isConnected.connectionChange()}
+          disabled={!network.isConnected}
+          onPress={() => checkConnection()}
         />
       </View>
     </View>
@@ -34,33 +53,39 @@ const OfflineScreen = (isConnected) => {
 };
 
 const mapStateToProps = (state) => {
-  return { isConnected: state.network.isConnected };
+  return { network: state.network };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  connectionChange: () => {
-    let isConnected;
-    checkInternetConnection().then((x) => (isConnected = x));
-    dispatch(offlineActionCreators.connectionChange(isConnected));
-  },
+  connectionChange: (isConnected) => dispatch(connectionChange(isConnected)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OfflineScreen);
-
-// export default OfflineScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgba(102, 45, 145, 1)', // #
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
     // padding: 20,
   },
+  contentImage: {
+    flex: 2,
+    alignContent: 'stretch',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.9)', // #
+    padding: 50,
+  },
+  image: {
+    alignSelf: 'center',
+    width: 250,
+    height: 250,
+  },
   contentText: {
-    flex: 1,
+    flex: 3,
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     paddingHorizontal: 20,
     textAlign: 'center',
   },

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/stack';
-import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert, Image } from 'react-native';
 import Firebase from '../utils/Firebase';
 import { signIn, setPhone } from '../reducers/user';
 import { MainButton, PressText } from '../components';
@@ -56,26 +56,33 @@ const CodeScreen = ({ route, navigation, signIn, setPhone }) => {
 
   return (
     <View style={styles.container(headerHeight)}>
+      <View style={styles.contentImage}>
+        <Image
+          style={styles.image}
+          source={require('../../assets/validationCode.png')}
+          resizeMode='center'
+        />
+      </View>
       <View style={styles.headerContent}>
         <Text style={styles.title}>Verificar código</Text>
         <Text style={styles.paragraph}>
           Por favor digita el código de verificación enviado al teléfono{' '}
           <Text style={styles.phoneBold}>{phoneNumber}</Text>
         </Text>
-      </View>
-      <View style={styles.codeContent}>
-        <TextInput
-          style={styles.validationNumber}
-          placeholder='Código'
-          textContentType='telephoneNumber'
-          keyboardType='number-pad'
-          onChangeText={(code) => onChangeCode(code)}
-        />
-        <MainButton text='Validar' disabled={hasCode} onPress={validate} />
-        <PressText
-          text='Cambiar número de teléfono'
-          onPress={() => navigation.goBack()}
-        />
+        <View style={styles.codeContent}>
+          <TextInput
+            style={styles.validationNumber}
+            placeholder='Código'
+            textContentType='telephoneNumber'
+            keyboardType='number-pad'
+            onChangeText={(code) => onChangeCode(code)}
+          />
+          <MainButton text='Validar' disabled={hasCode} onPress={validate} />
+          <PressText
+            text='Cambiar número de teléfono'
+            onPress={() => navigation.goBack()}
+          />
+        </View>
       </View>
     </View>
   );
@@ -98,22 +105,37 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(102, 45, 145, 1)',
     alignItems: 'stretch',
     justifyContent: 'center',
-    paddingVertical: headerHeight,
+    // paddingVertical: headerHeight,
   }),
+  contentImage: {
+    flex: 1,
+    alignContent: 'stretch',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.9)', // #
+    padding: 50,
+  },
+  image: {
+    alignSelf: 'center',
+    width: 250,
+    height: 250,
+  },
   headerContent: {
-    // flex: 1,
-    justifyContent: 'flex-end',
-    // paddingTop: headerHeight,
+    flex: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    textAlign: 'center',
+    // backgroundColor: '#000',
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
     color: '#fff',
+    fontWeight: 'bold',
+    paddingBottom: 10,
     textAlign: 'center',
-    marginBottom: 10,
   },
   paragraph: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#fff',
     textAlign: 'center',
     paddingHorizontal: 50,
@@ -124,11 +146,11 @@ const styles = StyleSheet.create({
   },
   codeContent: {
     // flex: 3,
-    // backgroundColor: '#000',
-    marginVertical: 0,
-    // alignItems: 'stretch',
+    // backgroundColor: '#f00',
+    // marginVertical: 0,
+    alignSelf: 'stretch',
     alignContent: 'center',
-    justifyContent: 'flex-start',
+    // justifyContent: 'flex-start',
     paddingHorizontal: 50,
   },
   validationNumber: {

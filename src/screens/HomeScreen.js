@@ -5,8 +5,6 @@ import { signOut } from '../reducers/user';
 import { NewUser, QRButton, MyTrips } from '../components';
 
 const HomeScreen = ({ navigation, data, signOut }) => {
-  console.log('data: ', data);
-
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.container}>

@@ -21,12 +21,13 @@ export default function AppStackScreen() {
           headerTintColor: '#eee',
           headerRight: () => <Amount />,
           headerBackTitle: 'hola',
-          headerLeft: () => (
-            <GoBack
-              onPress={() => navigation.goBack()}
-              navigation={navigation}
-            />
-          ),
+          // headerLeft: () => (
+          //   <GoBack
+          //     onPress={() => navigation.goBack()}
+          //     navigation={navigation}
+          //     route={route}
+          //   />
+          // ),
         })}
       />
     </AppStack.Navigator>

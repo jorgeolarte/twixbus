@@ -19,7 +19,7 @@ export default function LoginStackScreen() {
           title: null,
           headerTransparent: true,
           headerShown: true,
-          headerTintColor: '#fff',
+          headerTintColor: 'rgba(102, 45, 145, 1)',
         }}
       />
     </LoginStack.Navigator>
