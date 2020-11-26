@@ -4,3 +4,4 @@ export { default as HomeScreen } from './HomeScreen';
 export { default as ProfileScreen } from './ProfileScreen';
 export { default as OfflineScreen } from './OfflineScreen';
 export { default as QRScreen } from './QRScreen';
+export { default as TicketScreen } from './TicketScreen';

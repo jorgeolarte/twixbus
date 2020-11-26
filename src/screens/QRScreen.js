@@ -8,9 +8,12 @@ import {
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useLinkTo } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import * as Linking from 'expo-linking';
 
 const QRScreen = ({ navigation }) => {
+  const linkTo = useLinkTo();
   const [hasPermission, setHasPermission] = useState(null);
   const [flash, setFlash] = useState(false);
   const [flashMode, setFlashMode] = useState('off');
@@ -23,11 +26,28 @@ const QRScreen = ({ navigation }) => {
     })();
   }, []);
 
-  const handlePress = () => {
+  const changeFlash = () => {
     console.log('flash: ', flash);
     console.log('flashMode: ', flashMode);
     setFlash(!flash);
     setFlashMode(!flash ? 'torch' : 'off');
+  };
+
+  const scanning = (data) => {
+    setScanned(true);
+
+    let regex = /^(twixbus)+(:\/\/)+(bus)+(\/)+[a-zA-Z0-9]{6}$/gm;
+
+    console.log('data: ', data);
+
+    if (data.match(regex) === null) {
+      console.log('No ha escaneado un codigo valido');
+    } else {
+      let { path } = Linking.parse(data);
+      console.log('path: ', path);
+      navigation.navigate('Ticket', { carPlate: path });
+      changeFlash();
+    }
   };
 
   return (
@@ -44,10 +64,7 @@ const QRScreen = ({ navigation }) => {
           barCodeScannerSettings={{
             barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
           }}
-          onBarCodeScanned={(scan) => {
-            // setScanned(true);
-            console.log('scan: ', scan);
-          }}
+          onBarCodeScanned={({ data }) => scanning(data)}
         >
           <View style={styles.cameraContainer}>
             <View style={styles.headingContent}>
@@ -65,7 +82,7 @@ const QRScreen = ({ navigation }) => {
                 activeOpacity={0}
                 underlayColor='rgba(102, 45, 145, 0.8)'
                 style={styles.button}
-                onPress={handlePress}
+                onPress={changeFlash}
               >
                 <Icon
                   name='lightbulb'

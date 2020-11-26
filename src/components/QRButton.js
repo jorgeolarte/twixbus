@@ -8,7 +8,7 @@ export default ({ navigation }) => {
       activeOpacity={0.5}
       underlayColor='rgba(102, 45, 145, 0.8)'
       style={styles.button}
-      onPress={() => navigation.navigate('QR', { screen: 'QR' })}
+      onPress={() => navigation.push('QRStack')}
     >
       <Icon name='qrcode' size={50} color='#fff' style={styles.icon} />
     </TouchableHighlight>

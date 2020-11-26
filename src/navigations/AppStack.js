@@ -9,7 +9,7 @@ export default function AppStackScreen() {
   return (
     <AppStack.Navigator initialRouteName='App'>
       <AppStack.Screen
-        name='App'
+        name='MainStack'
         component={MainStackScreen}
         options={({ navigation }) => ({
           initialRouteName: 'App',

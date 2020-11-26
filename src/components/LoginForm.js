@@ -4,13 +4,13 @@ import { MainButton, Terms } from './index';
 
 const LoginForm = (props) => {
   const validatePhoneNumber = () => {
-    // let regex = /^([+])([57]*)([3])\d{9}$/gm;
-    // let phone = props.phoneNumber;
-    // if (phone.match(regex) === null) {
-    // Alert.alert('Teléfono invalido', 'El número ingresado es invalido');
-    // } else {
-    props.verify();
-    // }
+    let regex = /^([+])([57]*)([3])\d{9}$/gm;
+    let phone = props.phoneNumber;
+    if (phone.match(regex) === null) {
+      Alert.alert('Teléfono invalido', 'El número ingresado es invalido');
+    } else {
+      props.verify();
+    }
   };
 
   return (

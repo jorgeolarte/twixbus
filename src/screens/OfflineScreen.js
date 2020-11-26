@@ -9,7 +9,7 @@ import { MainButton } from '../components';
 
 const { connectionChange } = offlineActionCreators;
 
-const OfflineScreen = ({ network, connectionChange }) => {
+const OfflineScreen = ({ navigation, route, network, connectionChange }) => {
   useEffect(() => {
     return checkConnection;
   }, []);
@@ -35,7 +35,7 @@ const OfflineScreen = ({ network, connectionChange }) => {
         />
       </View>
       <View style={styles.contentText}>
-        <Text style={styles.headingText}>Oooops!</Text>
+        <Text style={styles.headingText}>Oooops! {route.params?.carPlate}</Text>
         <View style={styles.paragraph}>
           <Text style={styles.text}>Conexión a Internet lenta o nula</Text>
           <Text style={styles.text}>

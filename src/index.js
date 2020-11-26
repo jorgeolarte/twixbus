@@ -14,6 +14,41 @@ const { connectionChange } = offlineActionCreators;
 const RootStack = createStackNavigator();
 
 const MyApp = ({ data, network, signOut, connectionChange }) => {
+  const config = {
+    screens: {
+      Offline: 'Offline',
+      LoginStack: {
+        screens: {
+          Login: 'Login',
+          Code: 'Code',
+        },
+      },
+      AppStack: {
+        screens: {
+          MainStack: {
+            screens: {
+              Home: 'Home',
+              Profile: 'Profile',
+              QRStack: {
+                screens: {
+                  QR: 'QR',
+                  Ticket: {
+                    path: 'bus/:carPlate',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  };
+
+  const linking = {
+    prefixes: ['https://twixbus.com', 'twixbus://'],
+    config,
+  };
+
   useEffect(() => {
     const internetChecker = async () => {
       const isConnected = await checkInternetConnection();
@@ -33,7 +68,7 @@ const MyApp = ({ data, network, signOut, connectionChange }) => {
   return (
     <>
       <StatusBar style='auto' backgroundColor='#662d91' />
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <RootStack.Navigator initialRouteName='Login' headerMode='none'>
           {!network.isConnected ? (
             <RootStack.Screen
@@ -43,7 +78,10 @@ const MyApp = ({ data, network, signOut, connectionChange }) => {
           ) : data.userUid === null ? (
             <RootStack.Screen name='Login' component={navigations.LoginStack} />
           ) : (
-            <RootStack.Screen name='Main' component={navigations.AppStack} />
+            <RootStack.Screen
+              name='AppStack'
+              component={navigations.AppStack}
+            />
           )}
         </RootStack.Navigator>
       </NavigationContainer>
