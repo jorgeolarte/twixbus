@@ -11,7 +11,7 @@ const HomeScreen = ({ navigation, data, signOut }) => {
         <NewUser navigation={navigation} />
         <MyTrips userUid={data.userUid} />
       </View>
-      <QRButton />
+      <QRButton navigation={navigation} />
     </View>
   );
 };

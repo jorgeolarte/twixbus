@@ -2,13 +2,13 @@ import React from 'react';
 import { StyleSheet, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default () => {
+export default ({ navigation }) => {
   return (
     <TouchableHighlight
       activeOpacity={0.5}
       underlayColor='rgba(102, 45, 145, 0.8)'
       style={styles.button}
-      onPress={() => console.log('QR')}
+      onPress={() => navigation.navigate('QR', { screen: 'QR' })}
     >
       <Icon name='qrcode' size={50} color='#fff' style={styles.icon} />
     </TouchableHighlight>
