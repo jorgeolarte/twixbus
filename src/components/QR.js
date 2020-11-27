@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Alert,
   StyleSheet,
   Text,
   View,
   TouchableHighlight,
   Image,
+  Vibration,
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { useLinkTo } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as Linking from 'expo-linking';
+import { set } from 'react-native-reanimated';
 
-const QRScreen = ({ navigation }) => {
-  const linkTo = useLinkTo();
+const QR = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [flash, setFlash] = useState(false);
   const [flashMode, setFlashMode] = useState('off');
@@ -27,26 +28,23 @@ const QRScreen = ({ navigation }) => {
   }, []);
 
   const changeFlash = () => {
-    console.log('flash: ', flash);
-    console.log('flashMode: ', flashMode);
     setFlash(!flash);
     setFlashMode(!flash ? 'torch' : 'off');
   };
 
-  const scanning = (data) => {
-    setScanned(true);
-
+  const scanning = ({ type, data }) => {
+    Vibration.vibrate();
     let regex = /^(twixbus)+(:\/\/)+(bus)+(\/)+[a-zA-Z0-9]{6}$/gm;
-
-    console.log('data: ', data);
-
     if (data.match(regex) === null) {
       console.log('No ha escaneado un codigo valido');
+      Alert.alert(
+        'Código invalido',
+        'El código que intentas escanear no pertenece a uno de nuestros buses.'
+      );
     } else {
       let { path } = Linking.parse(data);
-      console.log('path: ', path);
+      flash ? changeFlash() : null;
       navigation.navigate('Ticket', { carPlate: path });
-      changeFlash();
     }
   };
 
@@ -64,7 +62,7 @@ const QRScreen = ({ navigation }) => {
           barCodeScannerSettings={{
             barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
           }}
-          onBarCodeScanned={({ data }) => scanning(data)}
+          onBarCodeScanned={scanning}
         >
           <View style={styles.cameraContainer}>
             <View style={styles.headingContent}>
@@ -108,7 +106,7 @@ const QRScreen = ({ navigation }) => {
   );
 };
 
-export default QRScreen;
+export default QR;
 
 const styles = StyleSheet.create({
   container: {
@@ -116,6 +114,7 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+    // resizeMode: 'cover',
   },
   cameraContainer: {
     flex: 1,

@@ -31,7 +31,7 @@ const MyApp = ({ data, network, signOut, connectionChange }) => {
               Profile: 'Profile',
               QRStack: {
                 screens: {
-                  QR: 'QR',
+                  Scanner: 'Scanner',
                   Ticket: {
                     path: 'bus/:carPlate',
                   },

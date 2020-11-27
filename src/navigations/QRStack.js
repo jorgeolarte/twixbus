@@ -7,7 +7,7 @@ const QRStack = createStackNavigator();
 export default function QRStackScreen() {
   return (
     <QRStack.Navigator initialRouteName='Home' headerMode='none'>
-      <QRStack.Screen name='QR' component={screens.QRScreen} />
+      <QRStack.Screen name='Scanner' component={screens.ScannerScreen} />
       <QRStack.Screen name='Ticket' component={screens.TicketScreen} />
     </QRStack.Navigator>
   );
