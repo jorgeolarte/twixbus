@@ -6,12 +6,9 @@ import { NewUser, QRButton, MyTrips } from '../components';
 
 const HomeScreen = ({ navigation, data, signOut }) => {
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <NewUser navigation={navigation} />
-        <MyTrips userUid={data.userUid} />
-      </View>
-      <QRButton navigation={navigation} />
+    <View style={styles.container}>
+      <NewUser navigation={navigation} />
+      <MyTrips userUid={data.userUid} />
     </View>
   );
 };
