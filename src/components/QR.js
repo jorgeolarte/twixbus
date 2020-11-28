@@ -51,9 +51,9 @@ const QR = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {hasPermission === null ? (
-        <Text>Requesting for camera permission</Text>
+        <Text>Solicitando permiso de cámara</Text>
       ) : hasPermission === false ? (
-        <Text>No access to camera</Text>
+        <Text>Sin acceso a la cámara</Text>
       ) : (
         <Camera
           style={styles.camera}

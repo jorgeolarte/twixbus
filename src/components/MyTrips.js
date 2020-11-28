@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { DateTime } from 'luxon';
 import { StyleSheet, FlatList, View, ActivityIndicator } from 'react-native';
 import ItemTrip from './ItemTrip';
 import Firebase from '../utils/Firebase';
@@ -26,14 +25,7 @@ export default ({ userUid }) => {
     try {
       setMyTrips([]);
       snapshot.forEach((myTrip) => {
-        let tempTrip = myTrip.toJSON();
-        tempTrip.boardingDate = DateTime.fromMillis(
-          parseInt(tempTrip.createdAt)
-        ).toLocaleString(DateTime.DATE_MED);
-        tempTrip.boardingTime = DateTime.fromMillis(
-          parseInt(tempTrip.createdAt)
-        ).toLocaleString(DateTime.TIME_SIMPLE);
-        setMyTrips((trips) => [...trips, tempTrip]);
+        setMyTrips((trips) => [...trips, myTrip.toJSON()]);
       });
     } catch (err) {
       console.log('error: ', err);

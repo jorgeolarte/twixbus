@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default ({ myTrip }) => {
+  const [boardingDate, setBoardingDate] = useState('');
+  const [boardingTime, setBoardingTime] = useState('');
+
+  useEffect(() => {
+    setBoardingDate(
+      DateTime.fromMillis(parseInt(myTrip.createdAt)).toLocaleString(
+        DateTime.DATE_MED
+      )
+    );
+
+    setBoardingTime(
+      DateTime.fromMillis(parseInt(myTrip.createdAt)).toLocaleString(
+        DateTime.TIME_SIMPLE
+      )
+    );
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerCompany}>
@@ -15,8 +33,8 @@ export default ({ myTrip }) => {
       <View style={styles.infoContent}>
         <View style={styles.columnContent}>
           <Text style={styles.dateMessage}>Fecha viaje</Text>
-          <Text style={styles.time}>{myTrip.boardingTime}</Text>
-          <Text style={styles.date}>{myTrip.boardingDate}</Text>
+          <Text style={styles.time}>{boardingTime}</Text>
+          <Text style={styles.date}>{boardingDate}</Text>
         </View>
         <View style={styles.columnContent}>
           <Icon name='bus' size={50} color='#000' />
