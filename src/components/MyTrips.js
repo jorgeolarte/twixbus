@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, FlatList, View, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  FlatList,
+  View,
+  Text,
+  ActivityIndicator,
+  Image,
+} from 'react-native';
 import ItemTrip from './ItemTrip';
 import Firebase from '../utils/Firebase';
-import { Colors } from '../styles';
+import { Colors, Typography } from '../styles';
 
 export default ({ userUid }) => {
   const [myTrips, setMyTrips] = useState([]);
@@ -18,7 +25,7 @@ export default ({ userUid }) => {
         });
     };
 
-    return () => fetchMyTrips();
+    return fetchMyTrips();
   }, []);
 
   const addedTrip = (snapshot) => {
@@ -36,8 +43,20 @@ export default ({ userUid }) => {
   };
 
   return loading ? (
-    <View>
+    <View style={styles.container}>
       <ActivityIndicator size='large' color={Colors.primary} />
+    </View>
+  ) : myTrips.length === 0 ? (
+    <View style={styles.container}>
+      <Text style={styles.heading}>¡Ooops!</Text>
+      <Text style={styles.subheading}>Aún no tienes viajes</Text>
+      <Image
+        style={styles.image}
+        source={require('../../assets/noTrips.png')}
+        resizeMode='center'
+      />
+      <Text style={styles.text}>Toma tu primer viaje</Text>
+      <Text style={styles.text}>Disfruta la experiencia Twixbus</Text>
     </View>
   ) : (
     <FlatList
@@ -51,6 +70,34 @@ export default ({ userUid }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
+    backgroundColor: Colors.white,
+    // flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  heading: {
+    fontSize: Typography.heading,
+    color: Colors.dark,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  subheading: {
+    fontSize: Typography.subheading,
+    color: Colors.dark,
+    // fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  image: {
+    alignSelf: 'center',
+    width: 250,
+    height: 250,
+  },
+  text: {
+    // backgroundColor: '#f00',
+    fontSize: Typography.normal,
+    color: Colors.dark,
+    textAlign: 'center',
   },
 });
