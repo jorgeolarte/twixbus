@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import IconStack from './IconStack';
 import QRStackScreen from './QRStack';
 import * as screens from '../screens';
+import { Colors } from '../styles';
 
 const MainStack = createBottomTabNavigator();
 
@@ -16,7 +17,7 @@ export default function MainStackScreen() {
             <IconStack
               name={route.name}
               focused={focused}
-              size={size}
+              size={30}
               color={color}
             />
           );
@@ -24,11 +25,14 @@ export default function MainStackScreen() {
         tabBarVisible: true,
       })}
       tabBarOptions={{
-        activeTintColor: 'rgba(102, 45, 145, 1)',
-        inactiveTintColor: '#ccc',
+        activeTintColor: Colors.primary,
+        inactiveTintColor: Colors.disabled,
         showLabel: false,
         labelPosition: 'below-icon',
         keyboardHidesTabBar: true,
+        style: {
+          height: 55,
+        },
       }}
     >
       <MainStack.Screen name='Home' component={screens.HomeScreen} />
