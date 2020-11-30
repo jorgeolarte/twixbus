@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/stack';
-import { StyleSheet, Text, View, TextInput, Alert, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Alert,
+  Image,
+  TouchableOpacityComponent,
+} from 'react-native';
 import Firebase from '../utils/Firebase';
 import { signIn, setPhone } from '../reducers/user';
 import { MainButton, PressText } from '../components';
+import { Colors, Typography } from '../styles';
 
 const CodeScreen = ({ route, navigation, signIn, setPhone }) => {
   const headerHeight = useHeaderHeight();
@@ -102,16 +111,15 @@ export default connect(mapStateToProps, mapDispatchToProps)(CodeScreen);
 const styles = StyleSheet.create({
   container: (headerHeight) => ({
     flex: 1,
-    backgroundColor: 'rgba(102, 45, 145, 1)',
+    backgroundColor: Colors.primary,
     alignItems: 'stretch',
     justifyContent: 'center',
-    // paddingVertical: headerHeight,
   }),
   contentImage: {
     flex: 1,
     alignContent: 'stretch',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.9)', // #
+    backgroundColor: Colors.white, // #
     padding: 50,
   },
   image: {
@@ -125,18 +133,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     textAlign: 'center',
-    // backgroundColor: '#000',
   },
   title: {
-    fontSize: 30,
-    color: '#fff',
+    fontSize: Typography.heading,
+    color: Colors.white,
     fontWeight: 'bold',
     paddingBottom: 10,
     textAlign: 'center',
   },
   paragraph: {
-    fontSize: 16,
-    color: '#fff',
+    fontSize: Typography.normal,
+    color: Colors.white,
     textAlign: 'center',
     paddingHorizontal: 50,
     paddingBottom: 20,
@@ -145,24 +152,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   codeContent: {
-    // flex: 3,
-    // backgroundColor: '#f00',
-    // marginVertical: 0,
     alignSelf: 'stretch',
     alignContent: 'center',
-    // justifyContent: 'flex-start',
     paddingHorizontal: 50,
   },
   validationNumber: {
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: Colors.white,
     padding: 20,
-    fontSize: 30,
+    fontSize: Typography.heading,
     textAlign: 'center',
   },
   changePhone: {
-    color: '#fff',
+    color: Colors.white,
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: Typography.small,
     textDecorationLine: 'underline',
     fontStyle: 'italic',
   },

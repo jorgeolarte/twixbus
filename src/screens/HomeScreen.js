@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { signOut } from '../reducers/user';
-import { NewUser, QRButton, MyTrips } from '../components';
+import { StyleSheet, View } from 'react-native';
+import { NewUser, MyTrips } from '../components';
+import { Colors } from '../styles';
 
-const HomeScreen = ({ navigation, data, signOut }) => {
+const HomeScreen = ({ navigation, data }) => {
   return (
     <View style={styles.container}>
       <NewUser navigation={navigation} />
@@ -17,16 +17,12 @@ const mapStateToProps = (state) => {
   return { data: state.user };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  signOut: () => dispatch(signOut()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps)(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     // alignItems: 'center',
     // justifyContent: 'flex-start',
     padding: 10,

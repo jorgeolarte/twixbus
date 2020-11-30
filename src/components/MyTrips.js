@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, FlatList, View, ActivityIndicator } from 'react-native';
 import ItemTrip from './ItemTrip';
 import Firebase from '../utils/Firebase';
+import { Colors } from '../styles';
 
 export default ({ userUid }) => {
   const [myTrips, setMyTrips] = useState([]);
@@ -36,7 +37,7 @@ export default ({ userUid }) => {
 
   return loading ? (
     <View>
-      <ActivityIndicator size='large' color='rgba(102, 45, 145, 1)' />
+      <ActivityIndicator size='large' color={Colors.primary} />
     </View>
   ) : (
     <FlatList

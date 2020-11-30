@@ -12,13 +12,12 @@ import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as Linking from 'expo-linking';
-import { set } from 'react-native-reanimated';
+import { Colors, Typography } from '../styles';
 
 const QR = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [flash, setFlash] = useState(false);
   const [flashMode, setFlashMode] = useState('off');
-  const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -77,8 +76,8 @@ const QR = ({ navigation }) => {
             </View>
             <View style={styles.buttonsContainer}>
               <TouchableHighlight
-                activeOpacity={0}
-                underlayColor='rgba(102, 45, 145, 0.8)'
+                activeOpacity={0.5}
+                underlayColor={Colors.hover.primary}
                 style={styles.button}
                 onPress={changeFlash}
               >
@@ -86,17 +85,22 @@ const QR = ({ navigation }) => {
                   name='lightbulb'
                   solid={flash}
                   size={40}
-                  color='#fff'
+                  color={Colors.white}
                   style={styles.icon}
                 />
               </TouchableHighlight>
               <TouchableHighlight
                 activeOpacity={0.5}
-                underlayColor='rgba(102, 45, 145, 0.8)'
+                underlayColor={Colors.hover.primary}
                 style={styles.button}
                 onPress={() => navigation.goBack()}
               >
-                <Icon name='times' size={40} color='#fff' style={styles.icon} />
+                <Icon
+                  name='times'
+                  size={40}
+                  color={Colors.white}
+                  style={styles.icon}
+                />
               </TouchableHighlight>
             </View>
           </View>
@@ -128,10 +132,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   heading: {
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: Colors.hover.dark,
     padding: 20,
-    fontSize: 24,
-    color: '#fff',
+    fontSize: Typography.types.qr,
+    fontWeight: 'bold',
+    color: Colors.white,
   },
   image: {
     flex: 3,
@@ -146,9 +151,7 @@ const styles = StyleSheet.create({
     bottom: 30,
   },
   button: {
-    // flex: 1,
-    // alignItems: 'center',
-    backgroundColor: 'rgba(102, 45, 145, 1)',
+    backgroundColor: Colors.primary,
     alignContent: 'center',
     justifyContent: 'center',
     borderRadius: 200,

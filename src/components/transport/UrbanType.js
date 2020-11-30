@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Colors, Typography } from '../../styles';
 
 export default ({ myTrip }) => {
   const [boardingDate, setBoardingDate] = useState('');
@@ -37,7 +38,7 @@ export default ({ myTrip }) => {
           <Text style={styles.date}>{boardingDate}</Text>
         </View>
         <View style={styles.columnContent}>
-          <Icon name='bus' size={50} color='#000' />
+          <Icon name='bus' size={50} color={Colors.dark} />
           <Text style={styles.plate}>{myTrip.carPlate}</Text>
         </View>
       </View>
@@ -64,16 +65,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     marginBottom: 10,
-    borderColor: 'rgba(102, 45, 145, 0.2)',
+    borderColor: Colors.invisible.primary,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
   },
   headerCompany: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    borderColor: 'rgba(102, 45, 145, 0.2)',
+    borderColor: Colors.invisible.primary,
     borderBottomWidth: 1,
     borderRadius: 1,
     paddingBottom: 10,
@@ -84,7 +85,9 @@ const styles = StyleSheet.create({
   },
   nameCompany: {
     flexGrow: 1,
-    fontSize: 30,
+    fontSize: Typography.heading,
+    color: Colors.dark,
+    fontWeight: 'bold',
     paddingLeft: 10,
   },
   infoContent: {
@@ -99,19 +102,23 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   dateMessage: {
-    fontSize: 12,
+    fontSize: Typography.small,
+    color: Colors.dark,
     fontWeight: '100',
   },
   time: {
-    fontSize: 24,
+    fontSize: Typography.types.trip,
+    color: Colors.dark,
     fontWeight: 'bold',
   },
   date: {
-    fontSize: 14,
+    fontSize: Typography.types.date,
+    color: Colors.dark,
   },
   plate: {
     paddingTop: 5,
-    fontSize: 18,
+    fontSize: Typography.types.plate,
     fontWeight: 'bold',
+    color: Colors.dark,
   },
 });

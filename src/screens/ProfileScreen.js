@@ -1,14 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import { signOut } from '../reducers/user';
 
-export default function Profile({ navigation }) {
+const ProfileScreen = ({ navigation, data, signOut }) => {
   return (
     <View>
       <Text>Profile!</Text>
-      <Button title='Regresar' onPress={() => navigation.navigate('Home')} />
+      <Button title='Regresar' onPress={signOut} />
     </View>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return { data: state.user };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  signOut: () => dispatch(signOut()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
 
 const styles = StyleSheet.create({
   container: {

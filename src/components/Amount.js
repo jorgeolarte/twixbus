@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text } from 'react-native';
 import { setAmount } from '../reducers/user';
 import Firebase from '../utils/Firebase';
+import { Typography, Colors } from '../styles';
 
 const Amount = ({ user, setAmount }) => {
   useEffect(() => {
@@ -35,8 +36,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(Amount);
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 18,
-    color: '#fff',
+    fontSize: Typography.types.menu,
+    color: Colors.white,
     paddingHorizontal: 10,
   },
 });

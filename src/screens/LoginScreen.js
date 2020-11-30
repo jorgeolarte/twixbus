@@ -10,7 +10,7 @@ import Firebase from '../utils/Firebase';
 const LoginScreen = ({ navigation, data }) => {
   const recaptchaVerifier = useRef(null);
 
-  const [hasPhone, setHasPhone] = useState(true);
+  const [hasPhone, setHasPhone] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationId, setVerificationId] = useState();
 

@@ -1,14 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight } from 'react-native';
+import { Colors, Typography } from '../styles';
 
 const MainButton = (props) => {
   return (
     <TouchableHighlight
+      activeOpacity={0.5}
+      underlayColor={Colors.hover.secondary}
       style={[styles.button, !props.disabled ? styles.buttonDisabled : null]}
       disabled={!props.disabled}
       onPress={props.onPress}
     >
-      <Text style={styles.buttonText}>{props.text}</Text>
+      <Text style={[styles.text, !props.disabled ? styles.textDisabled : null]}>
+        {props.text}
+      </Text>
     </TouchableHighlight>
   );
 };
@@ -17,17 +22,20 @@ export default MainButton;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#1F914C',
+    backgroundColor: Colors.secondary,
     padding: 15,
     marginBottom: 20,
   },
   buttonDisabled: {
-    backgroundColor: 'rgba(31, 145, 75, 0.5)', // #1F914C
+    backgroundColor: Colors.disabled, // #1F914C
   },
-  buttonText: {
+  text: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#fff',
+    color: Colors.white,
+  },
+  textDisabled: {
+    color: Colors.dark,
   },
 });

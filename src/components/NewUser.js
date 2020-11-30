@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { setIsNew } from '../reducers/user';
 import Firebase from '../utils/Firebase';
+import { Colors, Typography } from '../styles';
 
 const NewUser = ({ navigation, user, setIsNew }) => {
   const [exist, setExist] = useState(false);
@@ -58,7 +59,7 @@ const NewUser = ({ navigation, user, setIsNew }) => {
   return user.isNew ? (
     <TouchableHighlight
       activeOpacity={0.5}
-      underlayColor='rgba(31, 145, 76, 0.5)'
+      underlayColor={Colors.hover.secondary}
       style={styles.container}
       onPress={() => navigation.navigate('Profile', { screen: 'Profile' })}
     >
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: 'rgba(31, 145, 76, 0.8)',
+    backgroundColor: Colors.secondary,
     marginBottom: 10,
     padding: 20,
   },
@@ -108,15 +109,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 24,
+    fontSize: Typography.types.newUser,
     fontWeight: 'bold',
-    color: '#fff',
+    color: Colors.white,
     // marginBottom: 10,
     paddingBottom: 2,
   },
   text: {
-    fontSize: 16,
-    color: '#fff',
+    fontSize: Typography.normal,
+    color: Colors.white,
     // paddingHorizontal: 10,
   },
 });

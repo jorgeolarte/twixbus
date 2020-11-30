@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, Text, Alert } from 'react-native';
 import { MainButton, Terms } from './index';
+import { Colors, Typography } from '../styles';
 
 const LoginForm = (props) => {
   const validatePhoneNumber = () => {
@@ -52,34 +53,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   welcomeText: {
-    fontSize: 16,
-    color: '#fff',
+    fontSize: Typography.normal,
+    color: Colors.white,
     textAlign: 'center',
     marginBottom: 20,
   },
   contentPhone: {
-    backgroundColor: '#FF0',
     flexDirection: 'row',
     marginBottom: 20,
   },
   isoPhoneNumber: {
-    backgroundColor: '#ddd',
+    backgroundColor: Colors.disabled,
+    fontSize: Typography.types.menu,
     padding: 20,
-    fontSize: 20,
     textAlign: 'center',
   },
   phoneNumber: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
+    fontSize: Typography.types.menu,
     padding: 20,
-    fontSize: 20,
     textAlign: 'center',
   },
   termsText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 12,
+    fontSize: Typography.small,
+    color: Colors.white,
     textDecorationLine: 'underline',
     fontStyle: 'italic',
+    textAlign: 'center',
   },
 });
