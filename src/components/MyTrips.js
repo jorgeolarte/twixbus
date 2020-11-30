@@ -18,7 +18,7 @@ export default ({ userUid }) => {
         });
     };
 
-    return fetchMyTrips();
+    return () => fetchMyTrips();
   }, []);
 
   const addedTrip = (snapshot) => {

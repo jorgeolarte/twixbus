@@ -7,7 +7,7 @@ const ProfileScreen = ({ navigation, data, signOut }) => {
   return (
     <View>
       <Text>Profile!</Text>
-      <Button title='Regresar' onPress={signOut} />
+      <Button title='Cerrar sesión' onPress={signOut} />
     </View>
   );
 };
