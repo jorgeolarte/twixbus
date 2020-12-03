@@ -59,12 +59,13 @@ export default ({ userUid }) => {
       <Text style={styles.text}>Disfruta la experiencia Twixbus</Text>
     </View>
   ) : (
-    <FlatList
-      style={styles.container}
-      data={Object.assign([], myTrips).reverse()}
-      renderItem={({ item }) => <ItemTrip myTrip={item} />}
-      keyExtractor={(myTrip) => String(myTrip.createdAt)}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={Object.assign([], myTrips).reverse()}
+        renderItem={({ item }) => <ItemTrip myTrip={item} />}
+        keyExtractor={(myTrip) => String(myTrip.createdAt)}
+      />
+    </View>
   );
 };
 
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
     // flexDirection: 'column',
     alignContent: 'center',
     justifyContent: 'center',
-    padding: 20,
+    // padding: 20,
   },
   heading: {
     fontSize: Typography.heading,

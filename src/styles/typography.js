@@ -11,6 +11,7 @@ export default Typography = {
     qr: 24,
     input: 20,
     menu: 18,
+    price: 20,
   },
 };
 

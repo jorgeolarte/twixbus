@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import {
   Alert,
   StyleSheet,
@@ -12,9 +13,13 @@ import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as Linking from 'expo-linking';
+import { setCarPlate, onScanned, offScanned } from '../reducers/scan';
 import { Colors, Typography } from '../styles';
+import { useNavigation } from '@react-navigation/native';
 
-const QR = ({ navigation }) => {
+const QR = ({ scan, setCarPlate, onScanned, offScanned }) => {
+  const navigation = useNavigation();
+
   const [hasPermission, setHasPermission] = useState(null);
   const [flash, setFlash] = useState(false);
   const [flashMode, setFlashMode] = useState('off');
@@ -40,10 +45,12 @@ const QR = ({ navigation }) => {
         'Código invalido',
         'El código que intentas escanear no pertenece a uno de nuestros buses.'
       );
+      offScanned();
     } else {
       let { path } = Linking.parse(data);
       flash ? changeFlash() : null;
-      navigation.navigate('Ticket', { carPlate: path });
+      setCarPlate(path);
+      onScanned();
     }
   };
 
@@ -110,7 +117,17 @@ const QR = ({ navigation }) => {
   );
 };
 
-export default QR;
+const mapStateToProps = (state) => {
+  return { scan: state.scan };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  setCarPlate: (carPlate) => dispatch(setCarPlate(carPlate)),
+  onScanned: () => dispatch(onScanned()),
+  offScanned: () => dispatch(offScanned()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(QR);
 
 const styles = StyleSheet.create({
   container: {

@@ -7,7 +7,6 @@ const ScannerScreen = ({ navigation }) => {
 
   useEffect(() => {
     // let unsubscribe = true;
-    console.log('isFocused: ', isFocused);
 
     const onFocus = () => {
       navigation.addListener('focus', () => {
@@ -32,7 +31,7 @@ const ScannerScreen = ({ navigation }) => {
       </View>
     );
   }
-  return <QR navigation={navigation} />;
+  return <QR />;
 };
 
 export default ScannerScreen;

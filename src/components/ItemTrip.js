@@ -1,5 +1,5 @@
 import React from 'react';
-import { UrbanType } from './transport';
+import { UrbanType } from './cards';
 
 export default ({ myTrip }) => {
   if (myTrip.state === true) {

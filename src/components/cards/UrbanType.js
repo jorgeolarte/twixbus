@@ -1,12 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, ActivityIndicator } from 'react-native';
+import Firebase from '../../utils/Firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors, Typography } from '../../styles';
 
 export default ({ myTrip }) => {
+  const [logoLoading, setLogoLoading] = useState(true);
+  const [logoCompany, setLogoCompany] = useState(null);
+
   const [boardingDate, setBoardingDate] = useState('');
   const [boardingTime, setBoardingTime] = useState('');
+
+  useEffect(() => {
+    const loadImage = () => {
+      Firebase.storage()
+        .ref(`companies/${myTrip.idCompany}.jpg`)
+        .getDownloadURL()
+        .then((url) => {
+          setLogoCompany(url);
+          setLogoLoading(false);
+        })
+        .catch((error) => {
+          //------
+          // TODO
+          // Cargar logo por defecto
+          //------
+          console.log('firebase err: ', error);
+          setLogoLoading(true);
+        });
+    };
+
+    return loadImage();
+  }, []);
 
   useEffect(() => {
     setBoardingDate(
@@ -25,10 +51,11 @@ export default ({ myTrip }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerCompany}>
-        <Image
-          style={styles.logoCompany}
-          source={require('../../../assets/icon.png')}
-        />
+        {logoLoading ? (
+          <ActivityIndicator color={Colors.primary} />
+        ) : (
+          <Image style={styles.image} source={{ uri: `${logoCompany}` }} />
+        )}
         <Text style={styles.nameCompany}>{myTrip.company}</Text>
       </View>
       <View style={styles.infoContent}>
@@ -42,20 +69,6 @@ export default ({ myTrip }) => {
           <Text style={styles.plate}>{myTrip.carPlate}</Text>
         </View>
       </View>
-      {/* {parseInt(myTrip.tickets) === 1 ? (
-        <>
-          <Text>Total: {myTrip.total}</Text>
-        </>
-      ) : (
-        <>
-          <Text>Precio: {myTrip.price}</Text>
-
-          <Text>Ticketes: {myTrip.tickets}</Text>
-          <Text>Total: {myTrip.total}</Text>
-        </>
-      )}
-      <Icon name='ticket' size={50} color='#000' />
-      <Icon name='bus' size={50} color='#000' /> */}
     </View>
   );
 };
@@ -73,15 +86,17 @@ const styles = StyleSheet.create({
   headerCompany: {
     flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-start',
     borderColor: Colors.invisible.primary,
     borderBottomWidth: 1,
     borderRadius: 1,
     paddingBottom: 10,
   },
-  logoCompany: {
-    width: 50,
-    height: 50,
+  image: {
+    width: 35,
+    height: 35,
+    borderRadius: 35,
   },
   nameCompany: {
     flexGrow: 1,

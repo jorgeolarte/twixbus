@@ -1,5 +1,6 @@
 // export { default as LoginForm } from './LoginForm';
 export { default as Amount } from './Amount';
+export { default as Finished } from './Finished';
 export { default as GoBack } from './GoBack';
 export { default as Logo } from './Logo';
 export { default as MenuLogo } from './MenuLogo';
