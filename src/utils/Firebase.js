@@ -13,7 +13,7 @@ const firebaseConfig = {
 
 try {
   firebase.initializeApp(firebaseConfig);
-  firebase.auth();
+  // firebase.auth();
 } catch (err) {
   console.log('Firebase initialized');
 }

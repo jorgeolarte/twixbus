@@ -7,7 +7,7 @@ import { Colors } from '../styles';
 const HomeScreen = ({ navigation, data }) => {
   return (
     <View style={styles.container}>
-      <NewUser navigation={navigation} />
+      <NewUser />
       <MyTrips userUid={data.userUid} />
     </View>
   );

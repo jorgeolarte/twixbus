@@ -10,51 +10,60 @@ import {
 import { setIsNew } from '../reducers/user';
 import Firebase from '../utils/Firebase';
 import { Colors, Typography } from '../styles';
+import { useNavigation } from '@react-navigation/native';
 
-const NewUser = ({ navigation, user, setIsNew }) => {
+const NewUser = ({ user, setIsNew }) => {
+  const navigation = useNavigation();
+
   const [exist, setExist] = useState(false);
 
-  const validateExist = () => {
-    Firebase.database()
-      .ref(`users/${user.userUid}/isNew`)
-      .on('value', (snapshot) => {
-        let temp = snapshot.val();
-
-        if (temp === null) {
-          setIsNew(true);
-        } else if (temp) {
-          setIsNew(true);
-        } else {
-          setIsNew(false);
-        }
-      });
-  };
-
-  const userExist = () => {
-    Firebase.database()
-      .ref(`users/${user.userUid}`)
-      .once('value')
-      .then((snapshot) => {
-        setExist(snapshot.exists());
-      });
-  };
-
-  const createUser = () => {
-    let newUser = {
-      phoneNumber: user.phoneNumber,
-      amount: user.amount,
-      isNew: user.isNew,
+  useEffect(() => {
+    const userExist = () => {
+      Firebase.database()
+        .ref(`users/${user.userUid}`)
+        .once('value')
+        .then((snapshot) => {
+          setExist(snapshot.exists());
+        });
     };
-    Firebase.database().ref(`users/${user.userUid}`).set(newUser);
-  };
+
+    return userExist();
+  }, []);
 
   useEffect(() => {
-    validateExist();
-    userExist();
+    const validateExist = () => {
+      Firebase.database()
+        .ref(`users/${user.userUid}/isNew`)
+        .on('value', (snapshot) => {
+          let temp = snapshot.val();
+
+          if (temp === null) {
+            setIsNew(true);
+          } else if (temp) {
+            setIsNew(true);
+          } else {
+            setIsNew(false);
+          }
+        });
+    };
+
+    return validateExist();
+  }, [exist, setExist]);
+
+  useEffect(() => {
+    const createUser = () => {
+      let newUser = {
+        phoneNumber: user.phoneNumber,
+        amount: user.amount,
+        isNew: user.isNew,
+      };
+      Firebase.database().ref(`users/${user.userUid}`).set(newUser);
+    };
+
     if (!exist) {
-      createUser();
+      return createUser();
     }
-  }, []);
+  }, [setIsNew]);
 
   return user.isNew ? (
     <TouchableHighlight
