@@ -5,7 +5,7 @@ import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import { Video } from 'expo-av';
 import LoginForm from '../components/LoginForm';
 import { Logo } from '../components/';
-import Firebase from '../utils/Firebase';
+import { firebase } from '../utils/Firebase';
 
 const LoginScreen = ({ navigation, data }) => {
   const recaptchaVerifier = useRef(null);
@@ -16,8 +16,8 @@ const LoginScreen = ({ navigation, data }) => {
 
   const verify = async () => {
     try {
-      Firebase.auth().languageCode = 'es';
-      const phoneProvider = new Firebase.auth.PhoneAuthProvider();
+      firebase.auth().languageCode = 'es';
+      const phoneProvider = new firebase.auth.PhoneAuthProvider();
       const verificationId = await phoneProvider.verifyPhoneNumber(
         phoneNumber,
         recaptchaVerifier.current
@@ -56,7 +56,7 @@ const LoginScreen = ({ navigation, data }) => {
       <FirebaseRecaptchaVerifierModal
         ref={recaptchaVerifier}
         title='Eres un humano!'
-        firebaseConfig={Firebase.app().options}
+        firebaseConfig={firebase.app().options}
         cancelLabel='Cerrar'
       />
       <Logo

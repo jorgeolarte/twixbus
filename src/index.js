@@ -9,11 +9,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import * as navigations from './navigations';
 import { signOut } from './reducers/user';
+import { firebase } from './utils/Firebase';
 
 const { connectionChange } = offlineActionCreators;
 const RootStack = createStackNavigator();
 
-const MyApp = ({ data, network, signOut, connectionChange }) => {
+const MyApp = ({ user, network, signOut, connectionChange }) => {
   const config = {
     screens: {
       Offline: 'Offline',
@@ -50,6 +51,17 @@ const MyApp = ({ data, network, signOut, connectionChange }) => {
   };
 
   useEffect(() => {
+    const subscriber = firebase.auth().onAuthStateChanged((user) => {
+      console.log('user: ', user);
+      if (user === null) {
+        signOut();
+      }
+    });
+
+    return subscriber;
+  }, []);
+
+  useEffect(() => {
     const internetChecker = async () => {
       const isConnected = await checkInternetConnection();
       // Dispatching can be done inside a connected component, a thunk (where dispatch is injected), saga, or any sort of middleware
@@ -58,7 +70,7 @@ const MyApp = ({ data, network, signOut, connectionChange }) => {
       connectionChange(isConnected);
     };
 
-    if (typeof data.phoneNumber === 'undefined') {
+    if (typeof user.phoneNumber === 'undefined') {
       signOut();
     }
 
@@ -75,7 +87,7 @@ const MyApp = ({ data, network, signOut, connectionChange }) => {
               name='Offline'
               component={navigations.OfflineStack}
             />
-          ) : data.userUid === null ? (
+          ) : user.userUid === null ? (
             <RootStack.Screen name='Login' component={navigations.LoginStack} />
           ) : (
             <RootStack.Screen
@@ -91,7 +103,7 @@ const MyApp = ({ data, network, signOut, connectionChange }) => {
 
 const mapStateToProps = (state) => {
   return {
-    data: state.user,
+    user: state.user,
     network: state.network,
   };
 };

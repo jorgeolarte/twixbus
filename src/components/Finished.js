@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image, Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { MainButton } from '../components';
@@ -6,11 +6,6 @@ import { Colors, Typography } from '../styles';
 
 const Finished = ({ navigation, route }) => {
   const next = () => {
-    // navigation.navigate('Home');
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: 'Home' }],
-    // });
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -21,8 +16,6 @@ const Finished = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.contentImage}>
-      </View> */}
       <View style={styles.contentText}>
         <Image
           style={styles.image}

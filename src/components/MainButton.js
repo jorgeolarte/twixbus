@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight } from 'react-native';
-import { Colors, Typography } from '../styles';
+import { Colors } from '../styles';
 
 const MainButton = (props) => {
   return (

@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import ItemTrip from './ItemTrip';
-import Firebase from '../utils/Firebase';
+import { firebase } from '../utils/Firebase';
 import { Colors, Typography } from '../styles';
 
 export default ({ userUid }) => {
@@ -17,7 +17,8 @@ export default ({ userUid }) => {
 
   useEffect(() => {
     const fetchMyTrips = () => {
-      Firebase.database()
+      firebase
+        .database()
         .ref(`mytrips/${userUid}/`)
         .orderByKey()
         .on('value', (snapshot) => {

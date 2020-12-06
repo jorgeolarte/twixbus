@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import * as screens from '../screens';
 
 const LoginStack = createStackNavigator();

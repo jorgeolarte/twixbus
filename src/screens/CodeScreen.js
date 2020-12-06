@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/stack';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Alert,
-  Image,
-  TouchableOpacityComponent,
-} from 'react-native';
-import Firebase from '../utils/Firebase';
-import { signIn, setPhone } from '../reducers/user';
+import { StyleSheet, Text, View, TextInput, Alert, Image } from 'react-native';
+import { firebase } from '../utils/Firebase';
+import { signIn, setPhone, setToken } from '../reducers/user';
 import { MainButton, PressText } from '../components';
 import { Colors, Typography } from '../styles';
 
@@ -23,21 +15,18 @@ const CodeScreen = ({ route, navigation, signIn, setPhone }) => {
 
   const { phoneNumber, verificationId } = route.params;
 
-  const writeUserData = (userId, phone) => {
-    // const { isNew, amount } = User(userId);
-  };
-
   const validate = async () => {
     try {
-      const credential = Firebase.auth.PhoneAuthProvider.credential(
+      const credential = firebase.auth.PhoneAuthProvider.credential(
         verificationId,
         verificationCode
       );
 
-      await Firebase.auth()
+      await firebase
+        .auth()
         .signInWithCredential(credential)
         .then((confirmationResult) => {
-          console.log('el telefono es: ', phoneNumber);
+          // console.log('confirmationResult: ', confirmationResult);
           setPhone(phoneNumber);
           signIn(confirmationResult.user.uid);
         })
@@ -49,7 +38,6 @@ const CodeScreen = ({ route, navigation, signIn, setPhone }) => {
             'El código de verificación de SMS que se usó para crear la credencial de autenticación del teléfono no es válido.'
           );
         });
-
       // console.log('Phone authentication successful 👍');
       // showMessage({ text: "Phone authentication successful 👍" });
     } catch (err) {
@@ -104,6 +92,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   signIn: (userUid) => dispatch(signIn(userUid)),
   setPhone: (phone) => dispatch(setPhone(phone)),
+  setToken: (token) => dispatch(setToken(token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CodeScreen);

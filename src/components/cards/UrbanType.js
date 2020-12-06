@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import { StyleSheet, View, Text, Image, ActivityIndicator } from 'react-native';
-import Firebase from '../../utils/Firebase';
+import { firebase } from '../../utils/Firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors, Typography } from '../../styles';
 
@@ -14,7 +14,8 @@ export default ({ myTrip }) => {
 
   useEffect(() => {
     const loadImage = () => {
-      Firebase.storage()
+      firebase
+        .storage()
         .ref(`companies/${myTrip.idCompany}.jpg`)
         .getDownloadURL()
         .then((url) => {

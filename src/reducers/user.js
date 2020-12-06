@@ -5,6 +5,7 @@ const initialState = {
   phoneNumber: '',
   amount: 0,
   isNew: true,
+  token: '',
 };
 
 const t = makeType('user');
@@ -15,6 +16,7 @@ const SIGN_IN = t('SIGN_IN');
 const SET_PHONE = t('SET_PHONE');
 const SET_AMOUNT = t('SET_AMOUNT');
 const SET_ISNEW = t('SET_ISNEW');
+const SET_TOKEN = t('SET_TOKEN');
 
 export const isLogin = mac(IS_LOGIN);
 export const signIn = mac(SIGN_IN, 'payload');
@@ -22,6 +24,7 @@ export const signOut = mac(SIGN_OUT);
 export const setPhone = mac(SET_PHONE, 'payload');
 export const setAmount = mac(SET_AMOUNT, 'payload');
 export const setIsNew = mac(SET_ISNEW, 'payload');
+export const setToken = mac(SET_TOKEN, 'payload');
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -35,6 +38,10 @@ export default (state = initialState, action) => {
       return {
         ...state,
         userUid: null,
+        phoneNumber: '',
+        amount: 0,
+        isNew: true,
+        token: '',
       };
 
     case IS_LOGIN:
@@ -56,6 +63,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isNew: action.payload,
+      };
+
+    case SET_TOKEN:
+      return {
+        ...state,
+        token: action.payload,
       };
 
     default:

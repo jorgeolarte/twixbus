@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { setIsNew } from '../reducers/user';
-import Firebase from '../utils/Firebase';
+import { firebase } from '../utils/Firebase';
 import { Colors, Typography } from '../styles';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,7 +19,8 @@ const NewUser = ({ user, setIsNew }) => {
 
   useEffect(() => {
     const userExist = () => {
-      Firebase.database()
+      firebase
+        .database()
         .ref(`users/${user.userUid}`)
         .once('value')
         .then((snapshot) => {
@@ -32,7 +33,8 @@ const NewUser = ({ user, setIsNew }) => {
 
   useEffect(() => {
     const validateExist = () => {
-      Firebase.database()
+      firebase
+        .database()
         .ref(`users/${user.userUid}/isNew`)
         .on('value', (snapshot) => {
           let temp = snapshot.val();
@@ -57,7 +59,7 @@ const NewUser = ({ user, setIsNew }) => {
         amount: user.amount,
         isNew: user.isNew,
       };
-      Firebase.database().ref(`users/${user.userUid}`).set(newUser);
+      firebase.database().ref(`users/${user.userUid}`).set(newUser);
     };
 
     if (!exist) {

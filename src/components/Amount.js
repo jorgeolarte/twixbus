@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text } from 'react-native';
 import { setAmount } from '../reducers/user';
-import Firebase from '../utils/Firebase';
+import { firebase } from '../utils/Firebase';
 import { Typography, Colors } from '../styles';
 
 const Amount = ({ user, setAmount }) => {
   useEffect(() => {
     const loadAmount = () => {
-      Firebase.database()
+      firebase
+        .database()
         .ref(`/users/${user.userUid}/amount`)
         .on('value', (snapshot) => {
           if (snapshot.val() === null) {
