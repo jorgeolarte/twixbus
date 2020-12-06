@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { UrbanScreen, NoOneScreen } from './types';
 import { onScanned, offScanned } from '../reducers/scan';
-import Firebase from '../utils/Firebase';
+import { firebase } from '../utils/Firebase';
 
 const TicketScreen = ({ navigation, route, scan, onScanned, offScanned }) => {
   const [bus, setBus] = useState({});
@@ -22,7 +22,8 @@ const TicketScreen = ({ navigation, route, scan, onScanned, offScanned }) => {
 
   useEffect(() => {
     const getBus = () => {
-      Firebase.database()
+      firebase
+        .database()
         .ref(`/buses/${scan.carPlate}`)
         .once('value')
         .then((snapshot) => {
@@ -38,7 +39,8 @@ const TicketScreen = ({ navigation, route, scan, onScanned, offScanned }) => {
   useEffect(() => {
     const getCompany = () => {
       if (typeof bus.idCompany !== 'undefined') {
-        Firebase.database()
+        firebase
+          .database()
           .ref(`/companies/${bus.idCompany}`)
           .once('value')
           .then((snapshot) => {

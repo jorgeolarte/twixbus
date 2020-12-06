@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Colors, Typography } from '../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Firebase from '../../utils/Firebase';
+import { firebase } from '../../utils/Firebase';
 
 const UrbanScreen = ({ user, bus, company, navigation }) => {
   const [disabled, setDisabled] = useState(true);
@@ -36,7 +36,8 @@ const UrbanScreen = ({ user, bus, company, navigation }) => {
   useEffect(() => {
     const loadImage = () => {
       if (typeof company.image !== 'undefined') {
-        Firebase.storage()
+        firebase
+          .storage()
           .ref(`companies/${company.idCompany}.jpg`)
           .getDownloadURL()
           .then((url) => {
@@ -73,7 +74,7 @@ const UrbanScreen = ({ user, bus, company, navigation }) => {
     };
 
     try {
-      Firebase.database().ref(`mytrips/${user.userUid}/${now}`).set(mytrip);
+      firebase.database().ref(`mytrips/${user.userUid}/${now}`).set(mytrip);
       navigation.navigate('Finished');
     } catch (err) {
       console.log('error: ', err);
