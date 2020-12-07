@@ -3,6 +3,8 @@ import { makeType, mac } from '../utils/Reducers';
 const initialState = {
   userUid: null,
   phoneNumber: '',
+  name: '',
+  email: '',
   amount: 0,
   isNew: true,
   token: '',
@@ -17,6 +19,8 @@ const SET_PHONE = t('SET_PHONE');
 const SET_AMOUNT = t('SET_AMOUNT');
 const SET_ISNEW = t('SET_ISNEW');
 const SET_TOKEN = t('SET_TOKEN');
+const SET_NAME = t('SET_NAME');
+const SET_EMAIL = t('SET_EMAIL');
 
 export const isLogin = mac(IS_LOGIN);
 export const signIn = mac(SIGN_IN, 'payload');
@@ -25,6 +29,8 @@ export const setPhone = mac(SET_PHONE, 'payload');
 export const setAmount = mac(SET_AMOUNT, 'payload');
 export const setIsNew = mac(SET_ISNEW, 'payload');
 export const setToken = mac(SET_TOKEN, 'payload');
+export const setName = mac(SET_NAME, 'payload');
+export const setEmail = mac(SET_EMAIL, 'payload');
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -39,6 +45,8 @@ export default (state = initialState, action) => {
         ...state,
         userUid: null,
         phoneNumber: '',
+        name: '',
+        email: '',
         amount: 0,
         isNew: true,
         token: '',
@@ -69,6 +77,18 @@ export default (state = initialState, action) => {
       return {
         ...state,
         token: action.payload,
+      };
+
+    case SET_NAME:
+      return {
+        ...state,
+        name: action.payload,
+      };
+
+    case SET_EMAIL:
+      return {
+        ...state,
+        email: action.payload,
       };
 
     default:

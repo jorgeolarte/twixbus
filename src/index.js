@@ -52,7 +52,6 @@ const MyApp = ({ user, network, signOut, connectionChange }) => {
 
   useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged((user) => {
-      console.log('user: ', user);
       if (user === null) {
         signOut();
       }
