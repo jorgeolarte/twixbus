@@ -95,3 +95,17 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export const loadUser = (status) => async (dispatch) => {
+  let { phoneNumber, name, email, amount, isNew } = status;
+
+  try {
+    typeof phoneNumber === undefined ? null : dispatch(setPhone(phoneNumber));
+    typeof name === undefined ? null : dispatch(setName(name));
+    typeof email === undefined ? null : dispatch(setEmail(email));
+    typeof amount === undefined ? null : dispatch(setAmount(amount));
+    typeof isNew === undefined ? null : dispatch(setIsNew(isNew));
+  } catch (err) {
+    console.log('loadUser: ', err);
+  }
+};

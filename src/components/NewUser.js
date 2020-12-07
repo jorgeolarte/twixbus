@@ -18,20 +18,6 @@ const NewUser = ({ user, setIsNew }) => {
   const [exist, setExist] = useState(false);
 
   useEffect(() => {
-    const userExist = () => {
-      firebase
-        .database()
-        .ref(`users/${user.userUid}`)
-        .once('value')
-        .then((snapshot) => {
-          setExist(snapshot.exists());
-        });
-    };
-
-    return userExist();
-  }, []);
-
-  useEffect(() => {
     const validateExist = () => {
       firebase
         .database()
@@ -51,21 +37,6 @@ const NewUser = ({ user, setIsNew }) => {
 
     return validateExist();
   }, [exist, setExist]);
-
-  useEffect(() => {
-    const createUser = () => {
-      let newUser = {
-        phoneNumber: user.phoneNumber,
-        amount: user.amount,
-        isNew: user.isNew,
-      };
-      firebase.database().ref(`users/${user.userUid}`).set(newUser);
-    };
-
-    if (!exist) {
-      return createUser();
-    }
-  }, [setIsNew]);
 
   return user.isNew ? (
     <TouchableHighlight

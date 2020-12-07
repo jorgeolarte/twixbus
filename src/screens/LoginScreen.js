@@ -1,6 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import { Video } from 'expo-av';
 import LoginForm from '../components/LoginForm';
@@ -22,7 +29,9 @@ const LoginScreen = ({ navigation, data }) => {
         phoneNumber,
         recaptchaVerifier.current
       );
+
       setVerificationId(verificationId);
+
       console.log('Verification code has been sent to your phone.');
 
       navigation.navigate('Code', {
@@ -44,34 +53,41 @@ const LoginScreen = ({ navigation, data }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Video
-        source={require('../../assets/busLogin.mp4')}
-        style={styles.backgroundVideo}
-        isMuted={false}
-        resizeMode='cover'
-        shouldPlay
-        isLooping
-      />
-      <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        title='Eres un humano!'
-        firebaseConfig={firebase.app().options}
-        cancelLabel='Cerrar'
-      />
-      <Logo
-        flex={2}
-        justifyContent='center'
-        image={require('../../assets/twixbus-1024x539.png')}
-      />
-      <LoginForm
-        phoneNumber={phoneNumber}
-        hasPhone={hasPhone}
-        setHasPhone={() => setHasPhone(!hasPhone)}
-        verify={verify}
-        onChangeText={(phone) => onChangePhone(phone)}
-      />
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Video
+            source={require('../../assets/busLogin.mp4')}
+            style={styles.backgroundVideo}
+            isMuted={false}
+            resizeMode='cover'
+            shouldPlay
+            isLooping
+          />
+          <FirebaseRecaptchaVerifierModal
+            ref={recaptchaVerifier}
+            title='Eres un humano!'
+            firebaseConfig={firebase.app().options}
+            cancelLabel='Cerrar'
+          />
+          <Logo
+            flex={2}
+            justifyContent='center'
+            image={require('../../assets/twixbus-1024x539.png')}
+          />
+          <LoginForm
+            phoneNumber={phoneNumber}
+            hasPhone={hasPhone}
+            setHasPhone={() => setHasPhone(!hasPhone)}
+            verify={verify}
+            onChangeText={(phone) => onChangePhone(phone)}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 

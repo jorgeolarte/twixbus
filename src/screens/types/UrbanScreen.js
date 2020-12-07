@@ -73,8 +73,13 @@ const UrbanScreen = ({ user, bus, company, navigation }) => {
       state: true,
     };
 
+    let newAmount = {
+      amount: user.amount - total,
+    };
+
     try {
       firebase.database().ref(`mytrips/${user.userUid}/${now}`).set(mytrip);
+      firebase.database().ref(`users/${user.userUid}`).update(newAmount);
       navigation.navigate('Finished');
     } catch (err) {
       console.log('error: ', err);

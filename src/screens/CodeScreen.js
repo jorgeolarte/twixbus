@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/stack';
-import { StyleSheet, Text, View, TextInput, Alert, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { firebase } from '../utils/Firebase';
 import { signIn, setPhone, setToken } from '../reducers/user';
 import { MainButton, PressText } from '../components';
@@ -28,7 +39,7 @@ const CodeScreen = ({ route, navigation, signIn, setPhone }) => {
         .then((confirmationResult) => {
           // console.log('confirmationResult: ', confirmationResult);
           setPhone(phoneNumber);
-          signIn(confirmationResult.user.uid);
+          // signIn(confirmationResult.user.uid);
         })
         .catch((err) => {
           console.log('error', err.message);
@@ -52,36 +63,47 @@ const CodeScreen = ({ route, navigation, signIn, setPhone }) => {
   };
 
   return (
-    <View style={styles.container(headerHeight)}>
-      <View style={styles.contentImage}>
-        <Image
-          style={styles.image}
-          source={require('../../assets/validationCode.png')}
-          resizeMode='center'
-        />
-      </View>
-      <View style={styles.headerContent}>
-        <Text style={styles.title}>Verificar código</Text>
-        <Text style={styles.paragraph}>
-          Por favor digita el código de verificación enviado al teléfono{' '}
-          <Text style={styles.phoneBold}>{phoneNumber}</Text>
-        </Text>
-        <View style={styles.codeContent}>
-          <TextInput
-            style={styles.validationNumber}
-            placeholder='Código'
-            textContentType='telephoneNumber'
-            keyboardType='number-pad'
-            onChangeText={(code) => onChangeCode(code)}
-          />
-          <MainButton text='Validar' disabled={hasCode} onPress={validate} />
-          <PressText
-            text='Cambiar número de teléfono'
-            onPress={() => navigation.goBack()}
-          />
+    <KeyboardAvoidingView
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container(headerHeight)}>
+          <View style={styles.contentImage}>
+            <Image
+              style={styles.image}
+              source={require('../../assets/validationCode.png')}
+              resizeMode='center'
+            />
+          </View>
+          <View style={styles.headerContent}>
+            <Text style={styles.title}>Verificar código</Text>
+            <Text style={styles.paragraph}>
+              Por favor digita el código de verificación enviado al teléfono{' '}
+              <Text style={styles.phoneBold}>{phoneNumber}</Text>
+            </Text>
+            <View style={styles.codeContent}>
+              <TextInput
+                style={styles.validationNumber}
+                placeholder='Código'
+                textContentType='telephoneNumber'
+                keyboardType='number-pad'
+                onChangeText={(code) => onChangeCode(code)}
+              />
+              <MainButton
+                text='Validar'
+                disabled={hasCode}
+                onPress={validate}
+              />
+              <PressText
+                text='Cambiar número de teléfono'
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 

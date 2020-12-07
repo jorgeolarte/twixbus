@@ -10,7 +10,7 @@ const MainStack = createBottomTabNavigator();
 export default function MainStackScreen() {
   return (
     <MainStack.Navigator
-      initialRouteName='Profile'
+      initialRouteName='Home'
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           return (

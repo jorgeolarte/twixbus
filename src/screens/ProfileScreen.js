@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
   StyleSheet,
@@ -7,26 +7,37 @@ import {
   Button,
   Image,
   TextInput,
-  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { setName, setEmail } from '../reducers/user';
 import { Colors, Typography } from '../styles';
 import { firebase } from '../utils/Firebase';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { MainButton } from '../components';
-import { set } from 'react-native-reanimated';
 
 const ProfileScreen = ({ navigation, user, setName, setEmail }) => {
-  const [enable, setEnable] = useState(true);
+  const formik = useFormik({
+    initialValues: {
+      name: user.name,
+      email: user.email,
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required('Requerido *')
+        .min(3, 'Ingresa al menos 3 caracteres'),
+      email: Yup.string().email('Correo invalido').required('Requerido *'),
+    }),
+    onSubmit: (x) => update(x),
+  });
 
-  const disconnect = () => {
-    firebase.auth().signOut();
-  };
+  const update = async (data) => {
+    setName(data.name);
+    setEmail(data.email);
 
-  useEffect(() => {
-    console.log('name: ', user);
-  }, [user]);
-
-  const updateUser = () => {
     let dbuser = firebase.auth().currentUser;
 
     dbuser
@@ -34,77 +45,99 @@ const ProfileScreen = ({ navigation, user, setName, setEmail }) => {
         displayName: user.name,
       })
       .then(function () {
-        // Update successful.
-        console.log('nombre actauluzado');
+        console.log('nombre actualizado');
       })
       .catch(function (error) {
-        // An error happened.
         console.log('error: ', error);
       });
 
+    let newAmount = await firebase
+      .database()
+      .ref(`users/${user.userUid}/isNew`)
+      .once('value')
+      .then((snapshot) => {
+        console.log('snapshot: ', snapshot);
+        // return snapshot.val();
+        return snapshot.val() ? user.amount + 1700 : user.amount;
+      });
+
     firebase.database().ref(`users/${user.userUid}`).update({
-      name: user.name,
-      email: user.email,
+      name: data.name,
+      email: data.email,
+      isNew: false,
+      amount: newAmount,
     });
   };
 
-  const emailValidation = () => {
-    console.log(user.email);
-    let reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gm;
-    if (reg.test(String(user.email).toLowerCase()) === false) {
-      setEnable(false);
-    } else {
-      setEnable(true);
-    }
+  const disconnect = () => {
+    firebase.auth().signOut();
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
-        source={require('../../assets/profile.png')}
-        resizeMode='center'
-      />
-      <View style={styles.profileContainer}>
-        <Text style={styles.heading}>Tu perfil</Text>
-        <Text style={styles.subheading}>Actualiza tus datos</Text>
-        <TextInput
-          style={styles.input}
-          autoCapitalize='words'
-          autoCompleteType='name'
-          placeholder='Nombre completo'
-          onChangeText={setName}
-          defaultValue={user.name}
-        />
-        <TextInput
-          style={styles.input}
-          autoCompleteType='email'
-          placeholder='Correo electrónico'
-          onChangeText={setEmail}
-          defaultValue={user.email}
-          onEndEditing={emailValidation}
-        />
-        <TextInput
-          style={styles.input}
-          autoCompleteType='tel'
-          textContentType='telephoneNumber'
-          keyboardType='phone-pad'
-          placeholder='Teléfono'
-          editable={false}
-          defaultValue={user.phoneNumber}
-        />
-        <MainButton
-          disabled={enable}
-          text='Actualizar perfil'
-          onPress={updateUser}
-        />
-        <Button
-          title='Cerrar sesión'
-          color={Colors.danger}
-          onPress={disconnect}
-        />
-      </View>
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
+            source={require('../../assets/profile.png')}
+            resizeMode='center'
+          />
+          <View style={styles.profileContainer}>
+            <Text style={styles.heading}>Tu perfil</Text>
+            <Text style={styles.subheading}>Actualiza tus datos</Text>
+            {formik.errors.name && formik.touched.name ? (
+              <Text style={styles.error}>{formik.errors.name}</Text>
+            ) : null}
+            <TextInput
+              style={styles.input}
+              autoCapitalize='words'
+              autoCompleteType='name'
+              placeholder='Nombre completo'
+              onChangeText={formik.handleChange('name')}
+              value={formik.values.name}
+              defaultValue={user.name}
+              onBlur={formik.handleBlur('name')}
+            />
+            {formik.errors.email && formik.touched.email ? (
+              <Text style={styles.error}>{formik.errors.email}</Text>
+            ) : null}
+            <TextInput
+              style={styles.input}
+              autoCompleteType='email'
+              keyboardType='email-address'
+              textContentType='emailAddress'
+              placeholder='Correo electrónico'
+              onChangeText={formik.handleChange('email')}
+              value={formik.values.email}
+              defaultValue={user.email}
+              onBlur={formik.handleBlur('email')}
+            />
+            <TextInput
+              style={styles.input}
+              autoCompleteType='tel'
+              textContentType='telephoneNumber'
+              keyboardType='phone-pad'
+              placeholder='Teléfono'
+              editable={false}
+              defaultValue={user.phoneNumber}
+            />
+            <MainButton
+              disabled={true}
+              text='Actualizar perfil'
+              onPress={formik.handleSubmit}
+            />
+            <Button
+              title='Cerrar sesión'
+              color={Colors.danger}
+              onPress={disconnect}
+            />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -154,5 +187,9 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: Colors.disabled,
     marginBottom: 20,
+  },
+  error: {
+    fontSize: Typography.small,
+    color: Colors.danger,
   },
 });
