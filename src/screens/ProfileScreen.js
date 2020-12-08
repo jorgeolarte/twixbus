@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
   StyleSheet,
@@ -13,31 +13,49 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import { setName, setEmail } from '../reducers/user';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { setName, setEmail, setBirthdate } from '../reducers/user';
 import { Colors, Typography } from '../styles';
 import { firebase } from '../utils/Firebase';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { MainButton } from '../components';
+import { DateTime } from 'luxon';
 
-const ProfileScreen = ({ navigation, user, setName, setEmail }) => {
+const ProfileScreen = ({
+  navigation,
+  user,
+  setName,
+  setEmail,
+  setBirthdate,
+}) => {
+  const [date, setDate] = useState(new Date(1577880001000));
+  const [showBirthdate, setShowBirthdate] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       name: user.name,
       email: user.email,
+      birthdate: typeof user.birthdate === 'undefined' ? 0 : user.birthdate,
     },
     validationSchema: Yup.object({
       name: Yup.string()
         .required('Requerido *')
         .min(3, 'Ingresa al menos 3 caracteres'),
       email: Yup.string().email('Correo invalido').required('Requerido *'),
+      birthdate: Yup.number('Ingrese una fecha').required('Requerido *'),
     }),
-    onSubmit: (x) => update(x),
+    onSubmit: (data) => update(data),
   });
+
+  useEffect(() => {
+    console.log('user: ', user);
+  }, []);
 
   const update = async (data) => {
     setName(data.name);
     setEmail(data.email);
+    setBirthdate(data.birthdate);
 
     let dbuser = firebase.auth().currentUser;
 
@@ -62,13 +80,12 @@ const ProfileScreen = ({ navigation, user, setName, setEmail }) => {
         return snapshot.val();
       });
 
-    console.log('tempIsNew: ', tempIsNew);
-
     let newAmount = tempIsNew ? user.amount + 1700 : user.amount;
 
     firebase.database().ref(`users/${user.userUid}`).update({
       name: data.name,
       email: data.email,
+      birthdate: data.birthdate,
       isNew: false,
       amount: newAmount,
     });
@@ -88,6 +105,14 @@ const ProfileScreen = ({ navigation, user, setName, setEmail }) => {
         }
       );
     }
+  };
+
+  const onChangeBithdate = (event, selectedDate) => {
+    const currentDate = Date.parse(selectedDate || date);
+    setShowBirthdate(false);
+    setDate(currentDate);
+    formik.setFieldTouched('birthdate');
+    formik.setFieldValue('birthdate', currentDate);
   };
 
   const disconnect = () => {
@@ -136,15 +161,27 @@ const ProfileScreen = ({ navigation, user, setName, setEmail }) => {
               defaultValue={user.email}
               onBlur={formik.handleBlur('email')}
             />
-            <TextInput
-              style={styles.input}
-              autoCompleteType='tel'
-              textContentType='telephoneNumber'
-              keyboardType='phone-pad'
-              placeholder='Teléfono'
-              editable={false}
-              defaultValue={user.phoneNumber}
-            />
+            {formik.errors.birthdate && formik.touched.birthdate ? (
+              <Text style={styles.error}>{formik.errors.birthdate}</Text>
+            ) : null}
+            <Text style={styles.input} onPress={() => setShowBirthdate(true)}>
+              {formik.touched.birthdate === 'undefined' ||
+              formik.values.birthdate === 0
+                ? 'Fecha de cumpleaños'
+                : DateTime.fromMillis(formik.values.birthdate).toLocaleString(
+                    DateTime.DATE_SHORT
+                  )}
+            </Text>
+            {showBirthdate ? (
+              <DateTimePicker
+                value={date}
+                mode='date'
+                display='spinner'
+                maximumDate={Date.now()}
+                onChange={onChangeBithdate}
+                locale='es-ES'
+              />
+            ) : null}
             <MainButton
               disabled={true}
               text='Actualizar perfil'
@@ -169,6 +206,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   setName: (name) => dispatch(setName(name)),
   setEmail: (email) => dispatch(setEmail(email)),
+  setBirthdate: (birthdate) => dispatch(setBirthdate(birthdate)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
@@ -204,10 +242,18 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   input: {
+    // flex: 1,
     fontSize: Typography.normal,
     padding: 10,
     backgroundColor: Colors.disabled,
     marginBottom: 20,
+  },
+  birthdateInput: {
+    flex: 1,
+    fontSize: Typography.normal,
+    padding: 10,
+    backgroundColor: Colors.disabled,
+    // marginBottom: 20,
   },
   error: {
     fontSize: Typography.small,

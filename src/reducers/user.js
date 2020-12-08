@@ -5,6 +5,7 @@ const initialState = {
   phoneNumber: '',
   name: '',
   email: '',
+  birthdate: 0,
   amount: 0,
   isNew: true,
   token: '',
@@ -21,6 +22,7 @@ const SET_ISNEW = t('SET_ISNEW');
 const SET_TOKEN = t('SET_TOKEN');
 const SET_NAME = t('SET_NAME');
 const SET_EMAIL = t('SET_EMAIL');
+const SET_BIRTHDATE = t('SET_BIRTHDATE');
 
 export const isLogin = mac(IS_LOGIN);
 export const signIn = mac(SIGN_IN, 'payload');
@@ -31,6 +33,7 @@ export const setIsNew = mac(SET_ISNEW, 'payload');
 export const setToken = mac(SET_TOKEN, 'payload');
 export const setName = mac(SET_NAME, 'payload');
 export const setEmail = mac(SET_EMAIL, 'payload');
+export const setBirthdate = mac(SET_BIRTHDATE, 'payload');
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -47,6 +50,7 @@ export default (state = initialState, action) => {
         phoneNumber: '',
         name: '',
         email: '',
+        birthdate: 0,
         amount: 0,
         isNew: true,
         token: '',
@@ -91,13 +95,19 @@ export default (state = initialState, action) => {
         email: action.payload,
       };
 
+    case SET_BIRTHDATE:
+      return {
+        ...state,
+        birthdate: action.payload,
+      };
+
     default:
       return state;
   }
 };
 
 export const loadUser = (status) => async (dispatch) => {
-  let { phoneNumber, name, email, amount, isNew } = status;
+  let { phoneNumber, name, email, amount, isNew, birthdate } = status;
 
   try {
     typeof phoneNumber === undefined ? null : dispatch(setPhone(phoneNumber));
@@ -105,6 +115,7 @@ export const loadUser = (status) => async (dispatch) => {
     typeof email === undefined ? null : dispatch(setEmail(email));
     typeof amount === undefined ? null : dispatch(setAmount(amount));
     typeof isNew === undefined ? null : dispatch(setIsNew(isNew));
+    typeof birthdate === undefined ? null : dispatch(setBirthdate(birthdate));
   } catch (err) {
     console.log('loadUser: ', err);
   }

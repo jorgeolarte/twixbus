@@ -9,7 +9,7 @@ import { reset } from '../reducers/scan';
 
 const MainStack = createBottomTabNavigator();
 
-const MainStackScreen = ({ scan, reset }) => {
+const MainStackScreen = ({ reset }) => {
   return (
     <MainStack.Navigator
       initialRouteName='Home'
@@ -54,7 +54,7 @@ const MainStackScreen = ({ scan, reset }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { scan: state.scan };
+  return {};
 };
 
 const mapDispatchToProps = (dispatch) => ({
