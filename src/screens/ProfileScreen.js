@@ -11,6 +11,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native';
 import { setName, setEmail } from '../reducers/user';
 import { Colors, Typography } from '../styles';
@@ -51,15 +52,19 @@ const ProfileScreen = ({ navigation, user, setName, setEmail }) => {
         console.log('error: ', error);
       });
 
-    let newAmount = await firebase
+    let tempIsNew = false;
+
+    tempIsNew = await firebase
       .database()
       .ref(`users/${user.userUid}/isNew`)
       .once('value')
       .then((snapshot) => {
-        console.log('snapshot: ', snapshot);
-        // return snapshot.val();
-        return snapshot.val() ? user.amount + 1700 : user.amount;
+        return snapshot.val();
       });
+
+    console.log('tempIsNew: ', tempIsNew);
+
+    let newAmount = tempIsNew ? user.amount + 1700 : user.amount;
 
     firebase.database().ref(`users/${user.userUid}`).update({
       name: data.name,
@@ -67,6 +72,22 @@ const ProfileScreen = ({ navigation, user, setName, setEmail }) => {
       isNew: false,
       amount: newAmount,
     });
+
+    if (tempIsNew) {
+      Alert.alert(
+        'Felicitaciones',
+        'Has actualizado tus datos y te hemos obsequiado un viaje totalmente GRATIS',
+        [
+          {
+            text: 'Usar ya mismo 😎',
+            onPress: () => navigation.navigate('QRStack'),
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
+    }
   };
 
   const disconnect = () => {
