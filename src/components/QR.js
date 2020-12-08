@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Image,
   Vibration,
+  ActivityIndicator,
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -57,9 +58,15 @@ const QR = ({ scan, setCarPlate, onScanned, offScanned }) => {
   return (
     <View style={styles.container}>
       {hasPermission === null ? (
-        <Text>Solicitando permiso de cámara</Text>
+        <View style={styles.permissions}>
+          <ActivityIndicator color={Colors.primary} size='large' />
+          <Text style={styles.text}>Solicitando permiso de cámara</Text>
+        </View>
       ) : hasPermission === false ? (
-        <Text>Sin acceso a la cámara</Text>
+        <View style={styles.permissions}>
+          <Text style={styles.text}>No podemos escanear el código QR</Text>
+          <Text style={styles.text}>Sin acceso a la cámara</Text>
+        </View>
       ) : (
         <Camera
           style={styles.camera}
@@ -132,6 +139,17 @@ export default connect(mapStateToProps, mapDispatchToProps)(QR);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  permissions: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: Typography.normal,
+    color: Colors.dark,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   camera: {
     flex: 1,

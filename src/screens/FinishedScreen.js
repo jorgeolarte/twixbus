@@ -7,17 +7,13 @@ import { onScanned, offScanned } from '../reducers/scan';
 
 const FinishedScreen = ({ navigation, route, scan, onScanned, offScanned }) => {
   useEffect(() => {
-    const preventBack = () => {
-      navigation.addListener('beforeRemove', (e) => {
-        console.log('intento regresar: ', scan);
+    const preventBack = navigation.addListener('beforeRemove', (e) => {
+      scan.scanned ? offScanned() : onScanned();
 
-        scan.scanned ? offScanned() : onScanned();
+      e.preventDefault();
+    });
 
-        e.preventDefault();
-      });
-    };
-
-    return preventBack();
+    return preventBack;
   }, [navigation]);
 
   const next = () => {

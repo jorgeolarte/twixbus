@@ -9,18 +9,6 @@ const TicketScreen = ({ navigation, route, scan, onScanned, offScanned }) => {
   const [company, setCompany] = useState({});
 
   useEffect(() => {
-    const preventBack = () => {
-      navigation.addListener('beforeRemove', (e) => {
-        !scan.scanned ? offScanned() : onScanned();
-
-        e.preventDefault();
-      });
-    };
-
-    return preventBack();
-  }, [navigation]);
-
-  useEffect(() => {
     const getBus = () => {
       firebase
         .database()
@@ -56,9 +44,7 @@ const TicketScreen = ({ navigation, route, scan, onScanned, offScanned }) => {
 
   switch (bus.type) {
     case 'urbano':
-      return (
-        <UrbanScreen bus={bus} company={company} navigation={navigation} />
-      );
+      return <UrbanScreen bus={bus} company={company} />;
     default:
       return <NoOneScreen />;
   }

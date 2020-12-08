@@ -21,6 +21,7 @@
     "expo-firebase-core": "~1.2.0",
     "expo-firebase-recaptcha": "^1.2.0",
     "expo-status-bar": "~1.0.2",
+    "expo-updates": "~0.3.3",
     "firebase": "7.9.0",
     "formik": "^2.2.5",
     "jsc-android": "^241213.1.0",

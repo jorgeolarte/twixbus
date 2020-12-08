@@ -1,13 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import IconStack from './IconStack';
 import QRStackScreen from './QRStack';
 import * as screens from '../screens';
 import { Colors } from '../styles';
+import { reset } from '../reducers/scan';
 
 const MainStack = createBottomTabNavigator();
 
-export default function MainStackScreen() {
+const MainStackScreen = ({ scan, reset }) => {
   return (
     <MainStack.Navigator
       initialRouteName='Home'
@@ -42,8 +44,21 @@ export default function MainStackScreen() {
         options={({ navigation }) => ({
           tabBarVisible: false,
         })}
+        listeners={{
+          tabPress: (e) => reset(),
+        }}
       />
       <MainStack.Screen name='Profile' component={screens.ProfileScreen} />
     </MainStack.Navigator>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return { scan: state.scan };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(reset()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainStackScreen);

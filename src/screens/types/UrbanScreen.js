@@ -11,8 +11,11 @@ import {
 import { Colors, Typography } from '../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { firebase } from '../../utils/Firebase';
+import { useNavigation } from '@react-navigation/native';
 
-const UrbanScreen = ({ user, bus, company, navigation }) => {
+const UrbanScreen = ({ user, bus, company }) => {
+  const navigation = useNavigation();
+
   const [disabled, setDisabled] = useState(true);
   const [price, setPrice] = useState(0);
   const [tickets, setTickets] = useState(1);

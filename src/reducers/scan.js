@@ -39,3 +39,12 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export const reset = (status) => async (dispatch) => {
+  try {
+    dispatch(setCarPlate(null));
+    dispatch(offScanned());
+  } catch (err) {
+    console.log('reset scan: ', err);
+  }
+};
