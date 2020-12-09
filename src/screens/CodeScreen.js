@@ -4,6 +4,7 @@ import { useHeaderHeight } from '@react-navigation/stack';
 import {
   StyleSheet,
   Text,
+  ScrollView,
   View,
   TextInput,
   Alert,
@@ -73,7 +74,10 @@ const CodeScreen = ({ route, navigation, signIn, setPhone, setIsNewUser }) => {
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container(headerHeight)}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.containerScroll}
+        >
           <View style={styles.contentImage}>
             <Image
               style={styles.image}
@@ -106,7 +110,7 @@ const CodeScreen = ({ route, navigation, signIn, setPhone, setIsNewUser }) => {
               />
             </View>
           </View>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -125,23 +129,26 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(CodeScreen);
 
 const styles = StyleSheet.create({
-  container: (headerHeight) => ({
+  container: {
     flex: 1,
     backgroundColor: Colors.primary,
-    alignItems: 'stretch',
+    // alignItems: 'stretch',
+    // justifyContent: 'center',
+  },
+  containerScroll: {
+    flexGrow: 1,
     justifyContent: 'center',
-  }),
+  },
   contentImage: {
     flex: 1,
     alignContent: 'stretch',
     justifyContent: 'center',
     backgroundColor: Colors.white, // #
-    padding: 50,
+    padding: 20,
   },
   image: {
+    height: 200,
     alignSelf: 'center',
-    width: 250,
-    height: 250,
   },
   headerContent: {
     flex: 3,

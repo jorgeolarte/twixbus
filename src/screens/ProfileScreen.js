@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
   StyleSheet,
   Text,
+  ScrollView,
   View,
   Button,
   Image,
@@ -121,7 +122,10 @@ const ProfileScreen = ({
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.containerScroll}
+        >
           <Image
             style={styles.image}
             source={require('../../assets/profile.png')}
@@ -189,7 +193,7 @@ const ProfileScreen = ({
               onPress={disconnect}
             />
           </View>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -210,13 +214,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
     backgroundColor: Colors.white,
-    alignItems: 'center',
+  },
+  containerScroll: {
+    flexGrow: 1,
     justifyContent: 'center',
   },
   image: {
-    flex: 1,
+    marginVertical: 20,
+    // flex: 1,
+    height: 200,
+    alignSelf: 'center',
   },
   profileContainer: {
     flex: 2,

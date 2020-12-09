@@ -1,7 +1,9 @@
 {
   "expo": {
-    "name": "twixbus",
+    "name": "Twixbus",
+    "description": "Ve a donde quieras",
     "slug": "twixbus",
+    "privacy": "hidden",
     "scheme": "twixbus",
     "version": "1.0.0",
     "orientation": "portrait",
