@@ -48,10 +48,6 @@ const ProfileScreen = ({
     onSubmit: (data) => update(data),
   });
 
-  useEffect(() => {
-    console.log('user: ', user);
-  }, []);
-
   const update = async (data) => {
     setName(data.name);
     setEmail(data.email);

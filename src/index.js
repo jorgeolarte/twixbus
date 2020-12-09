@@ -8,7 +8,8 @@ import {
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import * as navigations from './navigations';
-import { signIn, signOut, loadUser } from './reducers/user';
+import { signIn, signOut } from './reducers/user';
+import { setIsNewUser } from './reducers/auth';
 import { firebase } from './utils/Firebase';
 import RoutesConfig from './utils/Routes';
 
@@ -16,26 +17,17 @@ const { connectionChange } = offlineActionCreators;
 const RootStack = createStackNavigator();
 
 const MyApp = ({
+  auth,
   user,
   network,
   signOut,
   connectionChange,
   signIn,
-  loadUser,
+  setIsNewUser,
 }) => {
-  const [uid, setUid] = useState(null);
-  const [exist, setExist] = useState(false);
-  const [isSignIn, setIsSignIn] = useState(false);
-
   const linking = {
     prefixes: ['https://twixbus.com', 'twixbus://'],
     RoutesConfig,
-  };
-
-  const reset = () => {
-    setUid(null);
-    setExist(false);
-    setIsSignIn(false);
   };
 
   useEffect(() => {
@@ -43,11 +35,9 @@ const MyApp = ({
       if (user === null) {
         console.log('cerro sesión');
         signOut();
-        reset();
       } else {
+        auth.isNewUser ? createUser(user.uid) : null;
         console.log('inicio sesión: ', user.uid);
-        setIsSignIn(true);
-        setUid(user.uid);
         signIn(user.uid);
       }
     });
@@ -55,54 +45,22 @@ const MyApp = ({
     return subscriber;
   }, []);
 
-  useEffect(() => {
-    const userExist = () => {
-      try {
-        if (uid !== null && isSignIn) {
-          firebase
-            .database()
-            .ref(`users/${uid}`)
-            .once('value')
-            .then((snapshot) => {
-              setExist(snapshot.exists());
-            });
-        }
-      } catch (err) {
-        console.log('userExist: ', err);
-      }
-    };
+  const createUser = (uid) => {
+    console.log('new user:', user);
 
-    return userExist();
-  }, [uid, setUid]);
+    try {
+      let newUser = {
+        phoneNumber: user.phoneNumber,
+        amount: user.amount,
+        isNew: user.isNew,
+      };
+      firebase.database().ref(`users/${uid}`).set(newUser);
 
-  useEffect(() => {
-    const createUser = () => {
-      try {
-        if (isSignIn) {
-          if (exist) {
-            firebase
-              .database()
-              .ref(`users/${uid}/`)
-              .once('value')
-              .then((snapshot) => {
-                loadUser(snapshot.toJSON());
-              });
-          } else {
-            let newUser = {
-              phoneNumber: user.phoneNumber,
-              amount: user.amount,
-              isNew: user.isNew,
-            };
-            firebase.database().ref(`users/${uid}`).set(newUser);
-          }
-        }
-      } catch (err) {
-        console.log('createUser: ', err);
-      }
-    };
-
-    return createUser();
-  }, [exist, setExist]);
+      setIsNewUser(false);
+    } catch (err) {
+      console.log('createUser: ', err);
+    }
+  };
 
   useEffect(() => {
     const internetChecker = async () => {
@@ -148,13 +106,14 @@ const mapStateToProps = (state) => {
   return {
     user: state.user,
     network: state.network,
+    auth: state.auth,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   signIn: (userUid) => dispatch(signIn(userUid)),
   signOut: () => dispatch(signOut()),
-  loadUser: (user) => dispatch(loadUser(user)),
+  setIsNewUser: (isNewUser) => dispatch(setIsNewUser(isNewUser)),
   connectionChange: (isConnected) => dispatch(connectionChange(isConnected)),
 });
 

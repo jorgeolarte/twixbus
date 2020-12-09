@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import IconStack from './IconStack';
@@ -6,10 +6,24 @@ import QRStackScreen from './QRStack';
 import * as screens from '../screens';
 import { Colors } from '../styles';
 import { reset } from '../reducers/scan';
+import { loadUser } from '../reducers/user';
+import { firebase } from '../utils/Firebase';
 
 const MainStack = createBottomTabNavigator();
 
-const MainStackScreen = ({ reset }) => {
+const MainStackScreen = ({ user, reset, loadUser }) => {
+  useEffect(() => {
+    const loadingUser = () => {
+      firebase
+        .database()
+        .ref(`/users/${user.userUid}/`)
+        .on('value', (snapshot) => {
+          loadUser(snapshot.toJSON());
+        });
+    };
+    return loadingUser();
+  }, []);
+
   return (
     <MainStack.Navigator
       initialRouteName='Home'
@@ -54,11 +68,12 @@ const MainStackScreen = ({ reset }) => {
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return { user: state.user };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   reset: () => dispatch(reset()),
+  loadUser: (user) => dispatch(loadUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainStackScreen);

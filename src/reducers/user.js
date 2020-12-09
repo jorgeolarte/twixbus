@@ -8,7 +8,6 @@ const initialState = {
   birthdate: 0,
   amount: 0,
   isNew: true,
-  token: '',
 };
 
 const t = makeType('user');
@@ -19,7 +18,6 @@ const SIGN_IN = t('SIGN_IN');
 const SET_PHONE = t('SET_PHONE');
 const SET_AMOUNT = t('SET_AMOUNT');
 const SET_ISNEW = t('SET_ISNEW');
-const SET_TOKEN = t('SET_TOKEN');
 const SET_NAME = t('SET_NAME');
 const SET_EMAIL = t('SET_EMAIL');
 const SET_BIRTHDATE = t('SET_BIRTHDATE');
@@ -30,7 +28,6 @@ export const signOut = mac(SIGN_OUT);
 export const setPhone = mac(SET_PHONE, 'payload');
 export const setAmount = mac(SET_AMOUNT, 'payload');
 export const setIsNew = mac(SET_ISNEW, 'payload');
-export const setToken = mac(SET_TOKEN, 'payload');
 export const setName = mac(SET_NAME, 'payload');
 export const setEmail = mac(SET_EMAIL, 'payload');
 export const setBirthdate = mac(SET_BIRTHDATE, 'payload');
@@ -53,7 +50,6 @@ export default (state = initialState, action) => {
         birthdate: 0,
         amount: 0,
         isNew: true,
-        token: '',
       };
 
     case IS_LOGIN:
@@ -75,12 +71,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isNew: action.payload,
-      };
-
-    case SET_TOKEN:
-      return {
-        ...state,
-        token: action.payload,
       };
 
     case SET_NAME:

@@ -14,11 +14,12 @@ import {
   Keyboard,
 } from 'react-native';
 import { firebase } from '../utils/Firebase';
-import { signIn, setPhone, setToken } from '../reducers/user';
+import { signIn, setPhone } from '../reducers/user';
+import { setIsNewUser } from '../reducers/auth';
 import { MainButton, PressText } from '../components';
 import { Colors, Typography } from '../styles';
 
-const CodeScreen = ({ route, navigation, signIn, setPhone }) => {
+const CodeScreen = ({ route, navigation, signIn, setPhone, setIsNewUser }) => {
   const headerHeight = useHeaderHeight();
 
   const [hasCode, setHasCode] = useState(false);
@@ -37,7 +38,11 @@ const CodeScreen = ({ route, navigation, signIn, setPhone }) => {
         .auth()
         .signInWithCredential(credential)
         .then((confirmationResult) => {
-          // console.log('confirmationResult: ', confirmationResult);
+          console.log(
+            'confirmationResult: ',
+            confirmationResult.additionalUserInfo.isNewUser
+          );
+          setIsNewUser(confirmationResult.additionalUserInfo.isNewUser);
           setPhone(phoneNumber);
           // signIn(confirmationResult.user.uid);
         })
@@ -114,7 +119,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   signIn: (userUid) => dispatch(signIn(userUid)),
   setPhone: (phone) => dispatch(setPhone(phone)),
-  setToken: (token) => dispatch(setToken(token)),
+  setIsNewUser: (isNewUser) => dispatch(setIsNewUser(isNewUser)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CodeScreen);

@@ -12,31 +12,8 @@ import { firebase } from '../utils/Firebase';
 import { Colors, Typography } from '../styles';
 import { useNavigation } from '@react-navigation/native';
 
-const NewUser = ({ user, setIsNew }) => {
+const NewUser = ({ user }) => {
   const navigation = useNavigation();
-
-  const [exist, setExist] = useState(false);
-
-  useEffect(() => {
-    const validateExist = () => {
-      firebase
-        .database()
-        .ref(`users/${user.userUid}/isNew`)
-        .on('value', (snapshot) => {
-          let temp = snapshot.val();
-
-          if (temp === null) {
-            setIsNew(true);
-          } else if (temp) {
-            setIsNew(true);
-          } else {
-            setIsNew(false);
-          }
-        });
-    };
-
-    return validateExist();
-  }, [exist, setExist]);
 
   return user.isNew ? (
     <TouchableHighlight
@@ -67,11 +44,7 @@ const mapStateToProps = (state) => {
   return { user: state.user };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setIsNew: (isNew) => dispatch(setIsNew(isNew)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewUser);
+export default connect(mapStateToProps)(NewUser);
 
 const styles = StyleSheet.create({
   container: {
