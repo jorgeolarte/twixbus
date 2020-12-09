@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import {
   StyleSheet,
-  View,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
@@ -13,6 +13,7 @@ import { Video } from 'expo-av';
 import LoginForm from '../components/LoginForm';
 import { Logo } from '../components/';
 import { firebase } from '../utils/Firebase';
+import { Colors } from '../styles';
 
 const LoginScreen = ({ navigation, data }) => {
   const recaptchaVerifier = useRef(null);
@@ -58,12 +59,15 @@ const LoginScreen = ({ navigation, data }) => {
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.containerScroll}
+        >
           <Video
             source={require('../../assets/busLogin.mp4')}
             style={styles.backgroundVideo}
             isMuted={false}
-            resizeMode='cover'
+            resizeMode='stretch'
             shouldPlay
             isLooping
           />
@@ -85,7 +89,7 @@ const LoginScreen = ({ navigation, data }) => {
             verify={verify}
             onChangeText={(phone) => onChangePhone(phone)}
           />
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -98,6 +102,17 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.primary, // #
+
+    // alignItems: 'stretch',
+    // padding: 20,
+  },
+  containerScroll: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   backgroundVideo: {
     // height: 500,
     position: 'absolute',
@@ -106,12 +121,5 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     bottom: 0,
     right: 0,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: 'rgba(102, 45, 145, 1)', // #
-
-    alignItems: 'stretch',
-    padding: 20,
   },
 });
