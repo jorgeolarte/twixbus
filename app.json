@@ -9,6 +9,10 @@
     "orientation": "portrait",
     "primaryColor": "#662D91",
     "icon": "./assets/icon.png",
+    "notification": {
+      "icon": "./assets/notificationIcon.png",
+      "color": "#662D91"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,11 +26,13 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#662D91"
       },
-      "package": "com.twixbus.app"
+      "package": "com.twixbus.app",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

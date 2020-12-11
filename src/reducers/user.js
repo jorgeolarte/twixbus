@@ -8,6 +8,7 @@ const initialState = {
   birthdate: 0,
   amount: 0,
   isNew: true,
+  expoToken: null,
 };
 
 const t = makeType('user');
@@ -21,6 +22,7 @@ const SET_ISNEW = t('SET_ISNEW');
 const SET_NAME = t('SET_NAME');
 const SET_EMAIL = t('SET_EMAIL');
 const SET_BIRTHDATE = t('SET_BIRTHDATE');
+const SET_EXPOTOKEN = t('SET_EXPOTOKEN');
 
 export const isLogin = mac(IS_LOGIN);
 export const signIn = mac(SIGN_IN, 'payload');
@@ -31,6 +33,7 @@ export const setIsNew = mac(SET_ISNEW, 'payload');
 export const setName = mac(SET_NAME, 'payload');
 export const setEmail = mac(SET_EMAIL, 'payload');
 export const setBirthdate = mac(SET_BIRTHDATE, 'payload');
+export const setExpoToken = mac(SET_EXPOTOKEN, 'payload');
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -50,6 +53,7 @@ export default (state = initialState, action) => {
         birthdate: 0,
         amount: 0,
         isNew: true,
+        expoToken: null,
       };
 
     case IS_LOGIN:
@@ -97,7 +101,15 @@ export default (state = initialState, action) => {
 };
 
 export const loadUser = (status) => async (dispatch) => {
-  let { phoneNumber, name, email, amount, isNew, birthdate } = status;
+  let {
+    phoneNumber,
+    name,
+    email,
+    amount,
+    isNew,
+    birthdate,
+    expoToken,
+  } = status;
 
   try {
     typeof phoneNumber === undefined ? null : dispatch(setPhone(phoneNumber));
@@ -106,6 +118,7 @@ export const loadUser = (status) => async (dispatch) => {
     typeof amount === undefined ? null : dispatch(setAmount(amount));
     typeof isNew === undefined ? null : dispatch(setIsNew(isNew));
     typeof birthdate === undefined ? null : dispatch(setBirthdate(birthdate));
+    typeof expoToken === undefined ? null : dispatch(setExpoToken(expoToken));
   } catch (err) {
     console.log('loadUser: ', err);
   }
