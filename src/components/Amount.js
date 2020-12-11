@@ -1,12 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text } from 'react-native';
-import { setAmount } from '../reducers/user';
-import { firebase } from '../utils/Firebase';
 import { Typography, Colors } from '../styles';
+import { useNavigation } from '@react-navigation/native';
 
 const Amount = ({ user, setAmount }) => {
-  return <Text style={styles.text}>${user.amount}</Text>;
+  const navigation = useNavigation();
+
+  const onPress = () => {
+    navigation.navigate('Recharge');
+  };
+
+  return (
+    <Text onPress={onPress} style={styles.text}>
+      ${user.amount}
+    </Text>
+  );
 };
 
 const mapStateToProps = (state) => {

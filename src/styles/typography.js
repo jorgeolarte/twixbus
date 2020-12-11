@@ -1,4 +1,5 @@
 export default Typography = {
+  hyperheading: 70,
   heading: 30,
   subheading: 24,
   normal: 16,
