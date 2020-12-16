@@ -45,7 +45,7 @@ const CodeScreen = ({ route, navigation, signIn, setPhone, setIsNewUser }) => {
           );
           setIsNewUser(confirmationResult.additionalUserInfo.isNewUser);
           setPhone(phoneNumber);
-          // signIn(confirmationResult.user.uid);
+          signIn(confirmationResult.user.uid);
         })
         .catch((err) => {
           console.log('error', err.message);

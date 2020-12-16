@@ -3579,12 +3579,17 @@ expo-firebase-core@~1.2.0:
   resolved "https://registry.yarnpkg.com/expo-firebase-core/-/expo-firebase-core-1.2.0.tgz#1f41d777cb04e19f495d27491b1596bdeb233f95"
   integrity sha512-ojqiJLlH5BXQsrElPOtYsO0tHR2333mRDxV625Y0NQyjFBF17NQxlmCCkyh2uGO94LgcZTfB13SMiNHOe9RcZQ==
 
-expo-firebase-recaptcha@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/expo-firebase-recaptcha/-/expo-firebase-recaptcha-1.2.0.tgz#07518968d42420f1352090df9fded4b03768e297"
-  integrity sha512-GeOXoJq9gdnl5hPidU+HFlifNJkzIfnRLU+qspdkLEdrU7DImrNuFleHt93iT9TXa+NyL+XtgTnSlVx91kXuxA==
+expo-firebase-core@~1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/expo-firebase-core/-/expo-firebase-core-1.3.0.tgz#83da7f6454b710d55c0ddc3dfb3d9dd8506086ed"
+  integrity sha512-aSJymsdPU1qkq5f6hU+B+K+xOMMCKjnXnHWQ/2gdPcNvuoQdwMn6RYseIZ43/IXjL6LEnHY7VlANMtYEH2Wx5Q==
+
+expo-firebase-recaptcha@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/expo-firebase-recaptcha/-/expo-firebase-recaptcha-1.3.0.tgz#de9b1b66723335657cabf256b927eb173910ed50"
+  integrity sha512-YBNdI8CtOK5yRTJ60UGrxZwYVWrcO09XyDYdh5n5hrcVJ5aANWSr32Vo3MeIlWSIudeEIWMUhT/4xk931glK+A==
   dependencies:
-    expo-firebase-core "~1.2.0"
+    expo-firebase-core "~1.3.0"
 
 expo-font@~8.3.0:
   version "8.3.0"

@@ -1,5 +1,5 @@
 import { StatusBar } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   checkInternetConnection,
@@ -8,58 +8,16 @@ import {
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import * as navigations from './navigations';
-import { signIn, signOut } from './reducers/user';
-import { setIsNewUser } from './reducers/auth';
-import { firebase } from './utils/Firebase';
+import { signIn, signOut, loadUser } from './reducers/user';
 import RoutesConfig from './utils/Routes';
 
 const { connectionChange } = offlineActionCreators;
 const RootStack = createStackNavigator();
 
-const MyApp = ({
-  auth,
-  user,
-  network,
-  signOut,
-  connectionChange,
-  signIn,
-  setIsNewUser,
-}) => {
+const MyApp = ({ user, network, signOut, connectionChange }) => {
   const linking = {
     prefixes: ['https://twixbus.com', 'twixbus://'],
     RoutesConfig,
-  };
-
-  useEffect(() => {
-    const subscriber = firebase.auth().onAuthStateChanged((user) => {
-      if (user === null) {
-        console.log('cerro sesión');
-        signOut();
-      } else {
-        auth.isNewUser ? createUser(user.uid) : null;
-        console.log('inicio sesión: ', user.uid);
-        signIn(user.uid);
-      }
-    });
-
-    return subscriber;
-  }, []);
-
-  const createUser = (uid) => {
-    console.log('new user:', user);
-
-    try {
-      let newUser = {
-        phoneNumber: user.phoneNumber,
-        amount: user.amount,
-        isNew: user.isNew,
-      };
-      firebase.database().ref(`users/${uid}`).set(newUser);
-
-      setIsNewUser(false);
-    } catch (err) {
-      console.log('createUser: ', err);
-    }
   };
 
   useEffect(() => {
@@ -113,8 +71,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   signIn: (userUid) => dispatch(signIn(userUid)),
   signOut: () => dispatch(signOut()),
-  setIsNewUser: (isNewUser) => dispatch(setIsNewUser(isNewUser)),
   connectionChange: (isConnected) => dispatch(connectionChange(isConnected)),
+  loadUser: (user) => dispatch(loadUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyApp);

@@ -8,7 +8,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+import {
+  FirebaseRecaptchaVerifierModal,
+  FirebaseRecaptchaBanner,
+} from 'expo-firebase-recaptcha';
 import { Video } from 'expo-av';
 import LoginForm from '../components/LoginForm';
 import { Logo } from '../components/';
@@ -21,6 +24,8 @@ const LoginScreen = ({ navigation, data }) => {
   const [hasPhone, setHasPhone] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationId, setVerificationId] = useState();
+
+  const attemptInvisibleVerification = true;
 
   const verify = async () => {
     try {
@@ -43,7 +48,7 @@ const LoginScreen = ({ navigation, data }) => {
       //     text: "Verification code has been sent to your phone.",
       //   });
     } catch (err) {
-      console.log(`Error: ${err.message}`);
+      console.log(`Error verify: ${err.message}`);
       //   showMessage({ text: `Error: ${err.message}`, color: "red" });
     }
   };
@@ -73,8 +78,9 @@ const LoginScreen = ({ navigation, data }) => {
           />
           <FirebaseRecaptchaVerifierModal
             ref={recaptchaVerifier}
-            title='Eres un humano!'
+            title='¿Eres un humano?'
             firebaseConfig={firebase.app().options}
+            attemptInvisibleVerification={attemptInvisibleVerification}
             cancelLabel='Cerrar'
           />
           <Logo

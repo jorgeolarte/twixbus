@@ -17,7 +17,7 @@ const Terms = () => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <PressText text='Terminos y condiciones' onPress={changeModal} />
       <Modal
         animationType='slide'
@@ -47,6 +47,9 @@ const Terms = () => {
 export default Terms;
 
 const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 1,
+  },
   modal: {
     flex: 1,
     justifyContent: 'center',
@@ -60,13 +63,6 @@ const styles = StyleSheet.create({
   },
   webView: {
     flex: 1,
-  },
-  termsText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 12,
-    textDecorationLine: 'underline',
-    fontStyle: 'italic',
   },
   headerModal: {
     backgroundColor: '#662d91',

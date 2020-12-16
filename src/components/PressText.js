@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import { Colors, Typography } from '../styles';
 
 const PressText = (props) => {
   return (
@@ -13,10 +14,13 @@ export default PressText;
 
 const styles = StyleSheet.create({
   pressText: {
-    color: '#fff',
+    alignSelf: 'center',
+    color: Colors.white,
     textAlign: 'center',
-    fontSize: 12,
-    textDecorationLine: 'underline',
-    fontStyle: 'italic',
+    fontSize: Typography.small,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.white,
+    borderStyle: 'dashed',
+    marginBottom: 2,
   },
 });

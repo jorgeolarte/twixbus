@@ -10,7 +10,8 @@ import QRStackScreen from './QRStack';
 import * as screens from '../screens';
 import { Colors } from '../styles';
 import { reset } from '../reducers/scan';
-import { loadUser } from '../reducers/user';
+import { setIsNewUser } from '../reducers/auth';
+import { loadUser, signIn, signOut } from '../reducers/user';
 import { firebase } from '../utils/Firebase';
 
 const MainStack = createBottomTabNavigator();
@@ -23,21 +24,64 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const MainStackScreen = ({ user, reset, loadUser }) => {
+const MainStackScreen = ({
+  auth,
+  user,
+  reset,
+  loadUser,
+  signIn,
+  signOut,
+  setIsNewUser,
+}) => {
   const [notification, setNotification] = useState(false);
   // const notificationListener = useRef();
   // const responseListener = useRef();
 
   useEffect(() => {
-    const loadingUser = () => {
-      firebase
+    const subscriber = () => {
+      firebase.auth().onAuthStateChanged((currentUser) => {
+        currentUser === null ? signOut() : null;
+      });
+    };
+
+    return subscriber();
+  }, []);
+
+  useEffect(() => {
+    async function validateIsNew() {
+      auth.isNewUser ? await createUser() : null;
+      setIsNewUser(false);
+    }
+
+    validateIsNew();
+  }, []);
+
+  const createUser = async () => {
+    console.log('new user:', user);
+
+    try {
+      let newUser = {
+        phoneNumber: user.phoneNumber,
+        amount: user.amount,
+        isNew: user.isNew,
+      };
+      await firebase.database().ref(`users/${user.userUid}`).set(newUser);
+    } catch (err) {
+      console.log('createUser: ', err);
+    }
+  };
+
+  useEffect(() => {
+    async function loadingUser() {
+      await firebase
         .database()
         .ref(`/users/${user.userUid}/`)
         .on('value', (snapshot) => {
           loadUser(snapshot.toJSON());
         });
-    };
-    return loadingUser();
+    }
+
+    loadingUser();
   }, []);
 
   useEffect(() => {
@@ -158,12 +202,18 @@ const MainStackScreen = ({ user, reset, loadUser }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { user: state.user };
+  return {
+    auth: state.auth,
+    user: state.user,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  signIn: (userUid) => dispatch(signIn(userUid)),
+  signOut: () => dispatch(signOut()),
   reset: () => dispatch(reset()),
   loadUser: (user) => dispatch(loadUser(user)),
+  setIsNewUser: (isNewUser) => dispatch(setIsNewUser(isNewUser)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainStackScreen);

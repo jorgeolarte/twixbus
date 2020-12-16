@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, Text, Alert } from 'react-native';
+import { FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
 import { MainButton, Terms } from './index';
 import { Colors, Typography } from '../styles';
 
@@ -41,6 +42,12 @@ const LoginForm = (props) => {
         onPress={validatePhoneNumber}
       />
       <Terms />
+      <View style={styles.contentCaptcha}>
+        <FirebaseRecaptchaBanner
+          textStyle={styles.captchaHelpText}
+          linkStyle={styles.captchaLink}
+        />
+      </View>
     </View>
   );
 };
@@ -82,5 +89,18 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontStyle: 'italic',
     textAlign: 'center',
+  },
+  contentCaptcha: {
+    marginBottom: 20,
+  },
+  captchaHelpText: {
+    fontSize: 10,
+    opacity: 1,
+    textAlign: 'center',
+    color: Colors.white,
+  },
+  captchaLink: {
+    color: Colors.secondary,
+    fontWeight: 'bold',
   },
 });
