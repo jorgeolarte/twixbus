@@ -22,6 +22,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { MainButton } from '../components';
 import { DateTime } from 'luxon';
+import Constants from 'expo-constants';
 
 const ProfileScreen = ({
   navigation,
@@ -192,6 +193,9 @@ const ProfileScreen = ({
               color={Colors.danger}
               onPress={disconnect}
             />
+            <Text style={styles.version}>
+              Twixbus: {Constants.manifest.version}
+            </Text>
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>
@@ -263,5 +267,10 @@ const styles = StyleSheet.create({
   error: {
     fontSize: Typography.small,
     color: Colors.danger,
+  },
+  version: {
+    paddingTop: 10,
+    fontSize: 10,
+    textAlign: 'center',
   },
 });
