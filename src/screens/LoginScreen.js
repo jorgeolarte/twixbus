@@ -25,7 +25,7 @@ const LoginScreen = ({ navigation, data }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationId, setVerificationId] = useState();
 
-  const attemptInvisibleVerification = true;
+  const attemptInvisibleVerification = false;
 
   const verify = async () => {
     try {

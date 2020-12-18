@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, View, Text, Alert } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Alert, Image } from 'react-native';
 import { FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
 import { MainButton, Terms } from './index';
 import { Colors, Typography } from '../styles';
@@ -19,13 +19,20 @@ const LoginForm = (props) => {
     <View style={styles.container}>
       <Text style={styles.welcomeText}>¡Ve a donde quieras!</Text>
       <View style={styles.contentPhone}>
-        <TextInput
+        <View style={styles.isoContentNumber}>
+          <Image
+            source={require('../../assets/flagColombia.png')}
+            style={styles.flag}
+          />
+          <Text style={styles.isoNumber}>+57</Text>
+        </View>
+        {/* <TextInput
           style={styles.isoPhoneNumber}
           editable={false}
           disabled
           placeholder='+57'
           value='+57'
-        />
+        /> */}
         <TextInput
           style={styles.phoneNumber}
           placeholder='Número celular'
@@ -70,11 +77,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 20,
   },
-  isoPhoneNumber: {
+  isoContentNumber: {
+    display: 'flex',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
     backgroundColor: Colors.disabled,
-    fontSize: Typography.types.menu,
-    padding: 20,
-    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  isoNumber: {
+    paddingLeft: 5,
+    fontSize: Typography.normal,
+    color: Colors.dark,
+    fontWeight: 'bold',
+  },
+  flag: {
+    // marginHorizontal: 1,
+    width: 25,
+    height: 25,
   },
   phoneNumber: {
     flex: 1,

@@ -5,7 +5,7 @@
     "slug": "twixbus",
     "privacy": "hidden",
     "scheme": "twixbus",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "primaryColor": "#662D91",
     "icon": "./assets/icon.png",
@@ -26,16 +26,28 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.myfirstfirebase",
       "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#662D91"
-      },
-      "package": "com.twixbus.app",
-      "useNextNotificationsApi": true
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "twixbus",
+            "project": "twixbus",
+            "authToken": "1628255188d64b968b41d63e63a9a26e57dbbb63708e4036aeb9e9331a974abf"
+          }
+        }
+      ]
     }
   }
 }
