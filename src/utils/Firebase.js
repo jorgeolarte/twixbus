@@ -17,7 +17,7 @@ try {
     firebase.initializeApp(firebaseConfig);
   }
 } catch (err) {
-  console.log('Firebase initialized');
+  console.log('Firebase initialized: ', err);
 }
 
 export { firebase, auth };

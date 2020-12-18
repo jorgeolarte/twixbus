@@ -1,5 +1,5 @@
 import { StatusBar } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import {
   checkInternetConnection,
@@ -10,11 +10,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import * as navigations from './navigations';
 import { signIn, signOut, loadUser } from './reducers/user';
 import RoutesConfig from './utils/Routes';
+import * as Analytics from 'expo-firebase-analytics';
 
 const { connectionChange } = offlineActionCreators;
 const RootStack = createStackNavigator();
 
 const MyApp = ({ user, network, signOut, connectionChange }) => {
+  const routeNameRef = useRef();
+  const navigationRef = useRef();
+
   const linking = {
     prefixes: ['https://twixbus.com', 'twixbus://'],
     RoutesConfig,
@@ -39,7 +43,23 @@ const MyApp = ({ user, network, signOut, connectionChange }) => {
   return (
     <>
       <StatusBar style='auto' backgroundColor='#662d91' />
-      <NavigationContainer linking={linking}>
+      <NavigationContainer
+        ref={navigationRef}
+        linking={linking}
+        onReady={() => {
+          routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+        }}
+        onStateChange={() => {
+          const previousRouteName = routeNameRef.current;
+          const currentRouteName = navigationRef.current.getCurrentRoute().name;
+
+          if (previousRouteName !== currentRouteName) {
+            Analytics.setCurrentScreen(currentRouteName);
+          }
+          // Save the current route name for later comparision
+          routeNameRef.current = currentRouteName;
+        }}
+      >
         <RootStack.Navigator initialRouteName='Login' headerMode='none'>
           {!network.isConnected ? (
             <RootStack.Screen

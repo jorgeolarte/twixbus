@@ -13,6 +13,8 @@ import { reset } from '../reducers/scan';
 import { setIsNewUser } from '../reducers/auth';
 import { loadUser, signIn, signOut } from '../reducers/user';
 import { firebase } from '../utils/Firebase';
+import * as Analytics from 'expo-firebase-analytics';
+import { analytics } from 'firebase';
 
 const MainStack = createBottomTabNavigator();
 
@@ -40,7 +42,12 @@ const MainStackScreen = ({
   useEffect(() => {
     const subscriber = () => {
       firebase.auth().onAuthStateChanged((currentUser) => {
-        currentUser === null ? signOut() : null;
+        if (currentUser === null) {
+          signOut();
+          Analytics.resetAnalyticsData();
+        } else {
+          Analytics.setUserId(currentUser.uid);
+        }
       });
     };
 
