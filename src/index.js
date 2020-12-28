@@ -42,7 +42,11 @@ const MyApp = ({ user, network, signOut, connectionChange }) => {
 
   return (
     <>
-      <StatusBar style='auto' backgroundColor='#662d91' />
+      <StatusBar
+        style='auto'
+        backgroundColor='#662d91'
+        barStyle='light-content'
+      />
       <NavigationContainer
         ref={navigationRef}
         linking={linking}

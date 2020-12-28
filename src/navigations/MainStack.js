@@ -143,7 +143,7 @@ const MainStackScreen = ({
       token = (await Notifications.getExpoPushTokenAsync()).data;
       console.log(token);
     } else {
-      alert('Must use physical device for Push Notifications');
+      console.log('Must use physical device for Push Notifications');
     }
 
     if (token) {
@@ -167,7 +167,7 @@ const MainStackScreen = ({
 
   return (
     <MainStack.Navigator
-      initialRouteName='Home'
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           return (
@@ -192,9 +192,9 @@ const MainStackScreen = ({
         },
       }}
     >
-      <MainStack.Screen name='Home' component={screens.HomeScreen} />
+      <MainStack.Screen name="Home" component={screens.HomeScreen} />
       <MainStack.Screen
-        name='QRStack'
+        name="QRStack"
         component={QRStackScreen}
         options={({ navigation }) => ({
           tabBarVisible: false,
@@ -203,7 +203,7 @@ const MainStackScreen = ({
           tabPress: (e) => reset(),
         }}
       />
-      <MainStack.Screen name='Profile' component={screens.ProfileScreen} />
+      <MainStack.Screen name="Profile" component={screens.ProfileScreen} />
     </MainStack.Navigator>
   );
 };
