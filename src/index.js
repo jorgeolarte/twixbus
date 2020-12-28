@@ -38,19 +38,23 @@ const MyApp = ({ user, network, signOut, connectionChange }) => {
 
   return (
     <>
-      <StatusBar style='auto' backgroundColor='#662d91' />
+      <StatusBar
+        style="auto"
+        backgroundColor="#662d91"
+        barStyle="light-content"
+      />
       <NavigationContainer linking={linking}>
-        <RootStack.Navigator initialRouteName='Login' headerMode='none'>
+        <RootStack.Navigator initialRouteName="Login" headerMode="none">
           {!network.isConnected ? (
             <RootStack.Screen
-              name='Offline'
+              name="Offline"
               component={navigations.OfflineStack}
             />
           ) : user.userUid === null ? (
-            <RootStack.Screen name='Login' component={navigations.LoginStack} />
+            <RootStack.Screen name="Login" component={navigations.LoginStack} />
           ) : (
             <RootStack.Screen
-              name='AppStack'
+              name="AppStack"
               component={navigations.AppStack}
             />
           )}

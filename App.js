@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { ReduxNetworkProvider } from 'react-native-offline';
 import { PersistGate } from 'redux-persist/integration/react';
 import MyApp from './src/index';
 import { store, persistor } from './src/store';
 import * as Sentry from 'sentry-expo';
-import { TracingIntegrations } from 'sentry-expo';
 
 Sentry.init({
   dsn:
@@ -21,9 +20,9 @@ export default function () {
       <PersistGate loading={null} persistor={persistor}>
         <ReduxNetworkProvider
           pingTimeout={1000}
-          pingServerUrl='https://google.com'
+          pingServerUrl="https://google.com"
           pingInterval={30000}
-          httpMethod='HEAD'
+          httpMethod="HEAD"
           pingInBackground={true}
           pingOnlyIfOffline={true}
         >
